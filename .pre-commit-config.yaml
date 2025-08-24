@@ -11,3 +11,7 @@ repos:
       - id: clang-format
         args: [--style=file]
         files: \.(c|cpp|h|hpp)$
+  - repo: https://github.com/psf/black
+    rev: 24.4.0
+    hooks:
+      - id: black
