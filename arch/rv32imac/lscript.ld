@@ -24,6 +24,11 @@ SECTIONS
 		*(.rodata)
 	} > RAM
 
+	.sdata :
+	{
+		*(.sdata)
+	} > RAM
+
 	.data :
 	{
 		*(.data)
