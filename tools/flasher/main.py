@@ -1,6 +1,7 @@
 import serial
 import struct
 import time
+import argparse
 
 # SLIP
 SLIP_END = 0xC0
@@ -136,6 +137,7 @@ class ESP32C6RomProtocol:
         time.sleep(0.1)
         self.ser.rts = True
         self.ser.rts = False
+        time.sleep(0.1)
 
         print("====== ENTER DOWNLOAD MODE END ======")
 
@@ -269,10 +271,10 @@ class ESP32C6RomProtocol:
 
         return True
 
-    def flash_begin(self, eraze_size, nr_blocks, block_size, offset, encrypt=0):
+    def flash_begin(self, erase_size, nr_blocks, block_size, offset, encrypt=0):
         print("====== FLASH_BEGIN START ======")
 
-        data = struct.pack("<IIIII", eraze_size, nr_blocks, block_size, offset, encrypt)
+        data = struct.pack("<IIIII", erase_size, nr_blocks, block_size, offset, encrypt)
         self.send_command(ROM_COMMAND_FLASH_BEGIN, data)
 
         resp = self.recv_response(ROM_COMMAND_FLASH_BEGIN)
@@ -302,7 +304,7 @@ class ESP32C6RomProtocol:
 
         return True
 
-    def flash_end(self, reboot=True):
+    def flash_end(self, reboot=False):
         print("====== FLASH_END START ======")
         reboot_flag = 0x01 if reboot else 0x00
 
@@ -449,6 +451,20 @@ class ESP32C6RomProtocol:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Load image to ESP32C6 flash")
+    parser.add_argument("input", type=str, help="Path to input image file")
+
+    args = parser.parse_args()
+
+    input_file = args.input
+
+    try:
+        with open(input_file, "rb") as f:
+            input_bin = f.read()
+    except FileNotFoundError:
+        print(f"Error: '{input_file}' not found")
+        exit()
+
     try:
         protocol = ESP32C6RomProtocol(port="/dev/ttyACM0")
 
@@ -456,17 +472,19 @@ if __name__ == "__main__":
         protocol.flush()
         protocol.sync()
 
-        eraze_size = 0x8000
-        nr_blocks = 8
-        block_size = 0x1000
+        erase_size = len(input_bin)
+        nr_blocks = 1
+        block_size = len(input_bin)
         offset = 0x0
 
-        protocol.spi_attach(0)
-        # protocol.spi_set_params(eraze_size)
+        print(f"Image size: {block_size}")
 
-        protocol.flash_begin(eraze_size, nr_blocks, block_size, offset)
+        protocol.spi_attach(0)
+        # protocol.spi_set_params(erase_size)
+
+        protocol.flash_begin(erase_size, nr_blocks, block_size, offset)
         for seq in range(0, nr_blocks):
-            payload = block_size * b"\x00"
+            payload = input_bin
             protocol.flash_data(block_size, seq, payload)
         protocol.flash_end(True)
 
