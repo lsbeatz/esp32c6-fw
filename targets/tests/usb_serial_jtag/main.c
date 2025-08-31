@@ -103,11 +103,13 @@ union usb_serial_jtag_int_clr {
 bool is_serial_in_empty(void)
 {
 	union usb_serial_jtag_int_raw status;
+	bool rc = false;
 
 	status.raw = mmio_read_32(USB_SERIAL_JTAG_INT_RAW_REG);
 
 	if (status.serial_in_empty_int) {
 		mmio_write_32(USB_SERIAL_JTAG_INT_CLR_REG, status.raw);
+		rc = true;
 	}
 
 	return rc;
@@ -157,9 +159,70 @@ void print(const char *str)
 	}
 }
 
+#include <aspace.h>
+
+#define TIMG0_WDT_WP_ADDR	   (TIMG0_BASE + 0x0064)
+#define TIMG0_WDT_CONFIG0_ADDR (TIMG0_BASE + 0x0048)
+
+#define LP_WDT_WP_ADDR		(RTC_WDT_BASE + 0x0018)
+#define LP_WDT_CONFIG0_ADDR (RTC_WDT_BASE + 0x0000)
+
+void init_wdt(void)
+{
+	uint32_t raw;
+
+	raw = mmio_read_32(TIMG0_WDT_WP_ADDR);
+	if (raw != 0x50D83AA1) {
+		print("timeg0 Wkey value is not 0x50D83AA1\n");
+	}
+
+	mmio_write_32(TIMG0_WDT_WP_ADDR, 0x50D83AA1);
+
+	raw = mmio_read_32(TIMG0_WDT_CONFIG0_ADDR);
+	if (raw & (1 << 14)) {
+		print("timg0 flashboot_mode_en is enabled\n");
+	}
+
+	if (raw & (1 << 31)) {
+		print("timg0 wdt_en is enabled\n");
+	}
+
+	raw &= ~(1 << 14);
+	raw &= ~(1 << 31);
+	raw &= (1 << 22);
+
+	mmio_write_32(TIMG0_WDT_CONFIG0_ADDR, raw);
+	mmio_write_32(TIMG0_WDT_WP_ADDR, 0);
+
+	raw = mmio_read_32(LP_WDT_WP_ADDR);
+	if (raw != 0x50D83AA1) {
+		print("LP Wkey value is not 0x50D83AA1\n");
+	}
+
+	mmio_write_32(LP_WDT_WP_ADDR, 0x50D83AA1);
+
+	raw = mmio_read_32(LP_WDT_CONFIG0_ADDR);
+	if (raw & (1 << 12)) {
+		print("LP flashboot_mode_en is enabled\n");
+	}
+
+	if (raw & (1 << 31)) {
+		print("LP wdt_en is enabled\n");
+	}
+
+	raw &= ~(1 << 12);
+	raw &= ~(1 << 31);
+
+	mmio_write_32(LP_WDT_CONFIG0_ADDR, raw);
+
+	mmio_write_32(LP_WDT_WP_ADDR, 0);
+}
+
 int main(void)
 {
 	int cnt = 0;
+
+	init_wdt();
 
 	print("Hello World\n");
 
