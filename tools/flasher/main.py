@@ -32,9 +32,8 @@ ROM_HDR_FORMAT_RESPONSE = "<BBHI"  # DIR | CMD | SIZE | VALUE
 
 
 class ESP32C6RomProtocol:
-    def __init__(self, port, baudrate=115200, timeout=1):
+    def __init__(self, port, baudrate=115200, timeout=0.1):
         self.ser = serial.Serial(port, baudrate, timeout=timeout)
-        self.packet_sequence = 0
 
     def slip_encode(self, data):
         encoded_data = bytearray()
@@ -83,8 +82,6 @@ class ESP32C6RomProtocol:
         self.ser.write(bytearray([SLIP_END]))
 
     def check_response(self, packet, cmd):
-        # print("".join(f"0x{b:02X} " for b in packet))
-
         if len(packet) < 8:
             raise ValueError(f"Invalid response length: {len(packet)}")
 
@@ -124,33 +121,21 @@ class ESP32C6RomProtocol:
         return packet
 
     def enter_download_mode(self):
-        print("====== ENTER DOWNLOAD MODE START ======")
-
         self.ser.dtr = False
         self.ser.rts = False
-        time.sleep(0.1)
         self.ser.dtr = True
         self.ser.rts = False
-        time.sleep(0.1)
         self.ser.rts = True
         self.ser.dtr = False
-        time.sleep(0.1)
         self.ser.rts = True
         self.ser.rts = False
-        time.sleep(0.1)
-
-        print("====== ENTER DOWNLOAD MODE END ======")
 
     def reset(self):
-        print("====== CHIP RESET START ======")
-
         self.ser.dtr = False
         self.ser.rts = False
-        time.sleep(0.1)
+        time.sleep(0.05)
         self.ser.rts = True
         self.ser.rts = False
-
-        print("====== CHIP RESET END ======")
 
     def flush(self):
         while True:
@@ -162,8 +147,6 @@ class ESP32C6RomProtocol:
                 break
 
     def sync(self):
-        print("====== SYNC START ======")
-
         data = bytearray(
             [
                 0x07,
@@ -218,13 +201,9 @@ class ESP32C6RomProtocol:
             if status != 0:
                 print(f"SYNC ERROR CODE: {error}")
 
-        print("====== SYNC SUCCESS ======")
-
         return True
 
     def write_reg(self, address, value, mask=0xFFFFFFFF):
-        print("====== WRITE_REG START ======")
-
         data = struct.pack("<IIII", address, value, mask, 1)
 
         self.send_command(ROM_COMMAND_WRITE_REG, data)
@@ -247,8 +226,6 @@ class ESP32C6RomProtocol:
         return True
 
     def read_reg(self, address):
-        print("====== READ_REG START ======")
-
         data = struct.pack("<I", address)
         self.send_command(ROM_COMMAND_READ_REG, data)
 
@@ -272,8 +249,6 @@ class ESP32C6RomProtocol:
         return True
 
     def flash_begin(self, erase_size, nr_blocks, block_size, offset, encrypt=0):
-        print("====== FLASH_BEGIN START ======")
-
         data = struct.pack("<IIIII", erase_size, nr_blocks, block_size, offset, encrypt)
         self.send_command(ROM_COMMAND_FLASH_BEGIN, data)
 
@@ -282,13 +257,9 @@ class ESP32C6RomProtocol:
             print("FLASH_BEGIN TIMEOUT")
             return False
 
-        print("====== FLASH_BEGIN SUCCESS ======")
-
         return True
 
     def flash_data(self, block_size, seq, payload):
-        print("====== FLASH_DATA START ======")
-
         metadata = struct.pack("<IIII", block_size, seq, 0, 0)
         checksum = self.calculate_checksum(payload)
 
@@ -300,12 +271,9 @@ class ESP32C6RomProtocol:
             print("FLASH_DATA TIMEOUT")
             return False
 
-        print("====== FLASH_DATA SUCCESS ======")
-
         return True
 
     def flash_end(self, reboot=False):
-        print("====== FLASH_END START ======")
         reboot_flag = 0x01 if reboot else 0x00
 
         data = struct.pack("<I", reboot_flag)
@@ -316,13 +284,9 @@ class ESP32C6RomProtocol:
             print("FLASH_END TIMEOUT")
             return False
 
-        print("====== FLASH_END SUCCESS ======")
-
         return True
 
     def mem_begin(self, total_size, nr_blocks, block_size, offset):
-        print("====== MEM_BEGIN START ======")
-
         data = struct.pack("<IIII", total_size, nr_blocks, block_size, offset)
         self.send_command(ROM_COMMAND_MEM_BEGIN, data)
 
@@ -338,13 +302,9 @@ class ESP32C6RomProtocol:
             print(f"MEM_BEGIN ERROR CODE: {error}")
             return False
 
-        print("====== MEM_BEGIN SUCCESS ======")
-
         return True
 
     def mem_data(self, block_size, seq, payload):
-        print("====== MEM_DATA START ======")
-
         metadata = struct.pack("<IIII", block_size, seq, 0, 0)
         checksum = self.calculate_checksum(payload)
         data = metadata + payload
@@ -362,13 +322,9 @@ class ESP32C6RomProtocol:
             print(f"MEM_DATA ERROR CODE: {error}")
             return False
 
-        print("====== MEM_DATA SUCCESS ======")
-
         return True
 
     def mem_end(self, execute_flag, entry_point):
-        print("====== MEM_END START ======")
-
         data = struct.pack("<II", execute_flag, entry_point)
         self.send_command(ROM_COMMAND_MEM_END, data)
 
@@ -384,13 +340,9 @@ class ESP32C6RomProtocol:
             print(f"MEM_END ERROR CODE: {error}")
             return False
 
-        print("====== MEM_END SUCCESS ======")
-
         return True
 
     def spi_set_params(self, total_size):
-        print("====== SPI_SET_PARAMS START ======")
-
         fl_id = 0
         block_size = 64 * 1024
         sector_size = 4 * 1024
@@ -420,13 +372,9 @@ class ESP32C6RomProtocol:
             print(f"SPI_SET_PARAMS ERROR CODE: {error}")
             return False
 
-        print("====== SPI_SET_PARAMS SUCCESS ======")
-
         return True
 
     def spi_attach(self, spi_if=0):
-        print("====== SPI_ATTACH START ======")
-
         data = struct.pack("<II", spi_if, 0)
         self.send_command(ROM_COMMAND_SPI_ATTACH, data)
 
@@ -441,8 +389,6 @@ class ESP32C6RomProtocol:
         if status != 0:
             print(f"SPI_ATTACH ERROR CODE: {error}")
             return False
-
-        print("====== SPI_ATTACH SUCCESS ======")
 
         return True
 
@@ -476,8 +422,6 @@ if __name__ == "__main__":
         nr_blocks = 1
         block_size = len(input_bin)
         offset = 0x0
-
-        print(f"Image size: {block_size}")
 
         protocol.spi_attach(0)
         # protocol.spi_set_params(erase_size)
