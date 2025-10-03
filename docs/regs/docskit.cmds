@@ -1,0 +1,1 @@
+-f cheader docs/regs/drivers/timg.toml drivers/timg/timg_regs.h

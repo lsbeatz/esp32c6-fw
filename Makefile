@@ -78,6 +78,14 @@ image: ${BIN}
 flash: ${IMG}
 	${Q} ${PY} tools/flasher/main.py ${IMG}
 
+.PHONY: docs docs-regs
+docs: docs-regs
+
+docs-regs:
+	${Q} cat docs/regs/docskit.cmds | while read -r line; do \
+		${PY} tools/docskit/main.py $$line; \
+	done
+
 .PHONY: clean tags
 clean:
 	${Q} ${RM} ${OUT_DIR}
