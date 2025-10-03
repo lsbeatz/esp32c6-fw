@@ -1,0 +1,305 @@
+desc = "Watchdog Timers(WDT)"
+name = "wdt"
+prefix = "WDT"
+#alias = "LP_WDT"
+
+[[regs]]
+name = "RWDT_CONFIG0"
+desc = "Configure the RWDT operation"
+offset = 0x0000
+
+	[[regs.fields]]
+	name = "PAUSE_IN_SLP"
+	desc = "Configure whether or not pause RWDT when chip is in sleep mode."
+	bits = "9"
+	reset = 0x1
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "PROCPU_RESET_EN"
+	desc = "Configure whether or not to enable RWDT to reset CPU."
+	bits = "11"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "FLASHBOOT_MOD_EN"
+	desc = "Configure whether or not to enable RWDT when chip is in SPI boot mode."
+	bits = "12"
+	reset = 0x1
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "SYS_RESET_LENGTH"
+	desc = "Configure the core reset time. Measurement unit: LP_DYN_FAST_CLK"
+	bits = "15:13"
+	reset = 0x1
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "CPU_RESET_LENGTH"
+	desc = "Configure the CPU reset time. Measurement unit: LP_DYN_FAST_CLK"
+	bits = "18:16"
+	reset = 0x1
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "STG3"
+	desc = "Configure the timeout action of stage3."
+	bits = "21:19"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "STG2"
+	desc = "Configure the timeout action of stage2."
+	bits = "24:22"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "STG1"
+	desc = "Configure the timeout action of stage1."
+	bits = "27:25"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "STG0"
+	desc = "Configure the timeout action of stage0."
+	bits = "30:28"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "EN"
+	desc = "Configure whether or not enable RWDT."
+	bits = "31"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "RWDT_CONFIG1"
+desc = "Configure the RWDT timeout time of stage0"
+offset = 0x0004
+
+	[[regs.fields]]
+	name = "STG0_HOLD"
+	desc = "Configure the timeout time for stage0. Measurement unit: LP_DYN_SLOW_CLK"
+	bits = "31:0"
+	reset = 200000
+	access = "R/W"
+
+[[regs]]
+name = "RWDT_CONFIG2"
+desc = "Configure the RWDT timeout time of stage1"
+offset = 0x0008
+
+	[[regs.fields]]
+	name = "STG1_HOLD"
+	desc = "Configure the timeout time for stage1. Measurement unit: LP_DYN_SLOW_CLK"
+	bits = "31:0"
+	reset = 80000
+	access = "R/W"
+
+[[regs]]
+name = "RWDT_CONFIG3"
+desc = "Configure the RWDT timeout time of stage2"
+offset = 0x000C
+
+	[[regs.fields]]
+	name = "STG2_HOLD"
+	desc = "Configure the timeout time for stage2. Measurement unit: LP_DYN_SLOW_CLK"
+	bits = "31:0"
+	reset = 0x000fff
+	access = "R/W"
+
+[[regs]]
+name = "RWDT_CONFIG4"
+desc = "Configure the RWDT timeout time of stage3"
+offset = 0x0010
+
+	[[regs.fields]]
+	name = "STG3_HOLD"
+	desc = "Configure the timeout time for stage3. Measurement unit: LP_DYN_SLOW_CLK"
+	bits = "31:0"
+	reset = 0x000fff
+	access = "R/W"
+
+[[regs]]
+name = "RWDT_FEED"
+desc = "Configure the feed function of RWDT"
+offset = 0x0014
+
+	[[regs.fields]]
+	name = "FEED"
+	desc = "Configure this bit to feed the RWDT."
+	bits = "31"
+	reset = 0x0
+	access = "WT"
+
+[[regs]]
+name = "RWDT_WPROTECT"
+desc = "Configure the lock function of RWDT"
+offset = 0x0018
+
+	[[regs.fields]]
+	name = "WKEY"
+	desc = "Configure this field to lock or unlock RWDT’s configuration registers. 0x50D83AA1: unlock the RWDT configuration register. Others value: lock the RWDT configuration register which can’t be modified by software."
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "SWD_CONFIG"
+desc = "Configure the SWD operation"
+offset = 0x001C
+
+	[[regs.fields]]
+	name = "RESET_FLAG"
+	desc = "Represents the SWD whether or not generate the reset signal"
+	bits = "0"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "AUTO_FEED_EN"
+	desc = "Configure this bit to enable to feed SWD automatically by hardware."
+	bits = "18"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "RST_FLAG_CLR"
+	desc = "Configure this bit to clear SWD reset flag"
+	bits = "19"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "SIGNAL_WIDTH"
+	desc = "Confgure the SWD signal length that output to analog circuit. Measurement unit: LP_DYN_FAST_CLK (R/W)"
+	bits = "29:20"
+	reset = 300
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "DISABLE"
+	desc = "Configure this bit to disable the SWD."
+	bits = "30"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "FEED"
+	desc = "Configure this bit to feed the SWD."
+	bits = "31"
+	reset = 0x0
+	access = "WT"
+
+[[regs]]
+name = "SWD_WPROTECT"
+desc = "Configure the lock function of SWD"
+offset = 0x0020
+
+	[[regs.fields]]
+	name = "WKEY"
+	desc = "Configure this field to lock or unlock SWD’s configuration registers. 0x50D83AA1: unlock the SWD configuration register. Others value: lock the SWD configuration register which can’t be modified by the software."
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "INT_RAW"
+desc = "The interrupt raw register of WDT"
+offset = 0x0024
+
+	[[regs.fields]]
+	name = "SWD"
+	desc = "Represents the SWD whether or not generates timeout interrupt."
+	bits = "30"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "RWDT"
+	desc = "Represents the RWDT whether or not generates timeout interrupt."
+	bits = "31"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+[[regs]]
+name = "INT_ST"
+desc = "The interrupt status register of WDT"
+offset = 0x0028
+
+	[[regs.fields]]
+	name = "SWD"
+	desc = "Represents the SWD whether or not generates and sends timeout interrupt to CPU."
+	bits = "30"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "RWDT"
+	desc = "Represents the RWDT whether or not generates and sends timeout interrupt to CPU."
+	bits = "31"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "INT_ENA"
+desc = "The interrupt enable register of WDT"
+offset = 0x002C
+
+	[[regs.fields]]
+	name = "SWD"
+	desc = "Configure whether or not to enable the SWD to send timeout interrupt."
+	bits = "30"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "RWDT"
+	desc = "Configure whether or not to enable the RWDT to send timeout interrupt."
+	bits = "31"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "INT_CLR"
+desc = "The interrupt clear register of WDT"
+offset = 0x0030
+
+	[[regs.fields]]
+	name = "SWD"
+	desc = "Configure whether to clear the timeout interrupt signal sent by SWD to CPU."
+	bits = "30"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "RWDT"
+	desc = "Configure whether to clear the timeout interrupt signal sent by RWDT to CPU."
+	bits = "31"
+	reset = 0x0
+	access = "WT"
+
+[[regs]]
+name = "DATE"
+desc = "Version control register"
+offset = 0x03FC
+
+	[[regs.fields]]
+	name = "DATE"
+	desc = "Version control register"
+	bits = "30:0"
+	reset = 0x2112080
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "CLK_EN"
+	desc = "Reserved"
+	bits = "31"
+	reset = 0x0
+	access = "R/W"
