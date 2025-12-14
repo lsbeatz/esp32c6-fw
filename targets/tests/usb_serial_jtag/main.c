@@ -173,18 +173,18 @@ void init_wdt(void)
 
 	raw = mmio_read_32(TIMG0_WDT_WP_ADDR);
 	if (raw != 0x50D83AA1) {
-		print("timeg0 Wkey value is not 0x50D83AA1\n");
+		print("MWDT0 WP is enabled\n");
 	}
 
 	mmio_write_32(TIMG0_WDT_WP_ADDR, 0x50D83AA1);
 
 	raw = mmio_read_32(TIMG0_WDT_CONFIG0_ADDR);
 	if (raw & (1 << 14)) {
-		print("timg0 flashboot_mode_en is enabled\n");
+		print("MWDT0 flashboot protection is enabled\n");
 	}
 
 	if (raw & (1 << 31)) {
-		print("timg0 wdt_en is enabled\n");
+		print("MWDT0 is enabled\n");
 	}
 
 	raw &= ~(1 << 14);
@@ -196,18 +196,18 @@ void init_wdt(void)
 
 	raw = mmio_read_32(LP_WDT_WP_ADDR);
 	if (raw != 0x50D83AA1) {
-		print("LP Wkey value is not 0x50D83AA1\n");
+		print("RWDT WP is enabled\n");
 	}
 
 	mmio_write_32(LP_WDT_WP_ADDR, 0x50D83AA1);
 
 	raw = mmio_read_32(LP_WDT_CONFIG0_ADDR);
 	if (raw & (1 << 12)) {
-		print("LP flashboot_mode_en is enabled\n");
+		print("RWDT flashboot protection is enabled\n");
 	}
 
 	if (raw & (1 << 31)) {
-		print("LP wdt_en is enabled\n");
+		print("RWDT is enabled\n");
 	}
 
 	raw &= ~(1 << 12);
