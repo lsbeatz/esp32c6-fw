@@ -47,11 +47,13 @@ DASM := ${OUT_DIR}/out.dasm
 
 DIRS := $(dir ${OBJS})
 
-.PHONY: all dir
-all: dir ${BIN} ${DASM} ${IMG}
+.PHONY: all dir check
+all: check dir ${BIN} ${DASM} ${IMG}
+
+check:
+	$(call check_defined,TARGET)
 
 dir:
-	$(call check_defined,TARGET)
 	${Q} ${MKDIR} ${DIRS}
 
 ${IMG}: image
