@@ -1,6 +1,8 @@
 #include <stdbool.h>
 #include "mmio.h"
 
+#include <wdt/wdt.h>
+
 #define USB_SERIAL_JTAG_BASE (0x6000F000)
 
 #define USB_SERIAL_JTAG_EP1_REG				 (USB_SERIAL_JTAG_BASE + 0x0000)
@@ -159,80 +161,24 @@ void print(const char *str)
 	}
 }
 
-#include <aspace.h>
-
-#define TIMG0_WDT_WP_ADDR	   (TIMG0_BASE + 0x0064)
-#define TIMG0_WDT_CONFIG0_ADDR (TIMG0_BASE + 0x0048)
-
-#define LP_WDT_WP_ADDR		(RTC_WDT_BASE + 0x0018)
-#define LP_WDT_CONFIG0_ADDR (RTC_WDT_BASE + 0x0000)
-
 void init_wdt(void)
 {
-	uint32_t raw;
+	print("DISABLE_WDT_RTC\n");
+	wdt_unlock(WDT_ID_RTC);
+	wdt_set_flashboot_mode(WDT_ID_RTC, false);
+	wdt_lock(WDT_ID_RTC);
 
-	raw = mmio_read_32(TIMG0_WDT_WP_ADDR);
-	if (raw != 0x50D83AA1) {
-		print("MWDT0 WP is enabled\n");
-	}
-
-	mmio_write_32(TIMG0_WDT_WP_ADDR, 0x50D83AA1);
-
-	raw = mmio_read_32(TIMG0_WDT_CONFIG0_ADDR);
-	if (raw & (1 << 14)) {
-		print("MWDT0 flashboot protection is enabled\n");
-	}
-
-	if (raw & (1 << 31)) {
-		print("MWDT0 is enabled\n");
-	}
-
-	raw &= ~(1 << 14);
-	raw &= ~(1 << 31);
-	raw &= (1 << 22);
-
-	mmio_write_32(TIMG0_WDT_CONFIG0_ADDR, raw);
-	mmio_write_32(TIMG0_WDT_WP_ADDR, 0);
-
-	raw = mmio_read_32(LP_WDT_WP_ADDR);
-	if (raw != 0x50D83AA1) {
-		print("RWDT WP is enabled\n");
-	}
-
-	mmio_write_32(LP_WDT_WP_ADDR, 0x50D83AA1);
-
-	raw = mmio_read_32(LP_WDT_CONFIG0_ADDR);
-	if (raw & (1 << 12)) {
-		print("RWDT flashboot protection is enabled\n");
-	}
-
-	if (raw & (1 << 31)) {
-		print("RWDT is enabled\n");
-	}
-
-	raw &= ~(1 << 12);
-	raw &= ~(1 << 31);
-
-	mmio_write_32(LP_WDT_CONFIG0_ADDR, raw);
-
-	mmio_write_32(LP_WDT_WP_ADDR, 0);
+	print("DISABLE_WDT_MAIN0\n");
+	wdt_unlock(WDT_ID_MAIN0);
+	wdt_set_flashboot_mode(WDT_ID_MAIN0, false);
+	wdt_lock(WDT_ID_MAIN0);
 }
 
 int main(void)
 {
-	int cnt = 0;
-
 	init_wdt();
 
-	print("Hello World\n");
-
-	while (!is_serial_in_empty()) {
-		cnt++;
-	}
-
-	while (cnt--) {
-		print("c\n");
-	}
+	print("Test Usb_Serial_Jtag\n");
 
 	return 0;
 }
