@@ -78,7 +78,7 @@ image: ${BIN}
 	${Q} ${PY} tools/imager/main.py ${BIN} ${IMG}
 
 flash: ${IMG}
-	${Q} ${PY} tools/flasher/main.py ${IMG}
+	${Q} ${PY} tools/espctl/espctl.py ${IMG}
 
 .PHONY: docs docs-regs
 docs: docs-regs

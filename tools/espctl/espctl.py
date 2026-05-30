@@ -72,9 +72,7 @@ class ESP32C6RomProtocol:
         return checksum & 0xFF
 
     def send_command(self, cmd, data=b"", checksum=0):
-        header = struct.pack(
-            ROM_HDR_FORMAT_COMMAND, ROM_DIRECTION_REQUEST, cmd, len(data), checksum
-        )
+        header = struct.pack(ROM_HDR_FORMAT_COMMAND, ROM_DIRECTION_REQUEST, cmd, len(data), checksum)
         packet = self.slip_encode(header + data)
 
         self.ser.write(bytearray([SLIP_END]))
@@ -109,7 +107,7 @@ class ESP32C6RomProtocol:
         while True:
             byte = self.ser.read()
             if not byte:
-                raise serial.SerialTimeoutException("Failed to find end of packet")
+                raise serial.SerialTimeoutException(f"Failed to get end of packet: cmd({cmd})")
             if byte == bytes([SLIP_END]):
                 break
             resp.extend(byte)
@@ -121,21 +119,20 @@ class ESP32C6RomProtocol:
         return packet
 
     def enter_download_mode(self):
-        self.ser.dtr = False
-        self.ser.rts = False
-        self.ser.dtr = True
-        self.ser.rts = False
-        self.ser.rts = True
-        self.ser.dtr = False
-        self.ser.rts = True
-        self.ser.rts = False
+        self.ser.dtr = False  # RTS=?, DTR=0 | Initialize to know values
+        self.ser.rts = False  # RTS=0, DTR=0 | -
+        self.ser.dtr = True  # RTS=0, DTR=1 | Set download mode flag
+        self.ser.rts = False  # RTS=0, DTR=1 | Propagete DTR
+        self.ser.rts = True  # RTS=1, DTR=1 | -
+        self.ser.dtr = False  # RTS=1, DTR=0 | Reset SoC
+        self.ser.rts = True  # RTS=1, DTR=0 | Propagete DTR
+        self.ser.rts = False  # RTS=0, DTR=0 | Clear download flag
 
     def reset(self):
-        self.ser.dtr = False
-        self.ser.rts = False
-        time.sleep(0.05)
-        self.ser.rts = True
-        self.ser.rts = False
+        self.ser.dtr = False  # RTS=?, DTR=0 | -
+        self.ser.rts = False  # RTS=0, DTR=0 | Clear download flag
+        self.ser.rts = True  # RTS=1, DTR=0 | Reset SoC
+        self.ser.rts = False  # RTS=0, DTR=0 | Exit Reset
 
     def flush(self):
         while True:
@@ -147,61 +144,28 @@ class ESP32C6RomProtocol:
                 break
 
     def sync(self):
-        data = bytearray(
-            [
-                0x07,
-                0x07,
-                0x12,
-                0x20,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-                0x55,
-            ]
-        )
+        data = bytearray([0x07, 0x07, 0x12, 0x20] + [0x55] * 32)
 
-        self.send_command(ROM_COMMAND_SYNC, data)
+        for i in range(10):
+            try:
+                self.send_command(ROM_COMMAND_SYNC, data)
+                resp = self.recv_response(ROM_COMMAND_SYNC)
+                if resp:
+                    status = resp[8]
+                    error = resp[9]
 
-        while True:
-            resp = self.recv_response(ROM_COMMAND_SYNC)
-            if not resp:
-                break
+                    if status != 0:
+                        print(f"SYNC ERROR CODE: {error}")
+                    else:
+                        while True:
+                            resp = self.recv_response(ROM_COMMAND_SYNC)
+                            if not resp:
+                                break
+                        return True
+            except SerialTimeoutException:
+                print(f"SYNC Retrying...({i})")
 
-            status = resp[8]
-            error = resp[9]
-
-            if status != 0:
-                print(f"SYNC ERROR CODE: {error}")
-
-        return True
+        raise RuntimeError("Failed to sync with ESP32C6 ROM Loader")
 
     def write_reg(self, address, value, mask=0xFFFFFFFF):
         data = struct.pack("<IIII", address, value, mask, 1)
@@ -219,9 +183,7 @@ class ESP32C6RomProtocol:
             print(f"READ_REG ERROR CODE: {error}")
             return False
 
-        print(
-            f"====== WRITE_REG SUCCESS: ADDR({hex(address)}) VALUE({hex(value)}) ======"
-        )
+        print(f"====== WRITE_REG SUCCESS: ADDR({hex(address)}) VALUE({hex(value)}) ======")
 
         return True
 
@@ -242,9 +204,7 @@ class ESP32C6RomProtocol:
             print(f"READ_REG ERROR CODE: {error}")
             return False
 
-        print(
-            f"====== READ_REG SUCCESS: ADDR({hex(address)}) VALUE({hex(value)}) ======"
-        )
+        print(f"====== READ_REG SUCCESS: ADDR({hex(address)}) VALUE({hex(value)}) ======")
 
         return True
 
