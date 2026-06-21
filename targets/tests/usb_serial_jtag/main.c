@@ -163,15 +163,17 @@ void print(const char *str)
 
 void init_wdt(void)
 {
-	print("DISABLE_WDT_RTC\n");
 	wdt_unlock(WDT_ID_RTC);
 	wdt_set_flashboot_mode(WDT_ID_RTC, false);
+	wdt_disable(WDT_ID_RTC);
 	wdt_lock(WDT_ID_RTC);
 
-	print("DISABLE_WDT_MAIN0\n");
 	wdt_unlock(WDT_ID_MAIN0);
 	wdt_set_flashboot_mode(WDT_ID_MAIN0, false);
+	wdt_disable(WDT_ID_MAIN0);
 	wdt_lock(WDT_ID_MAIN0);
+
+	wdt_swd_enable_auto_feed();
 }
 
 int main(void)

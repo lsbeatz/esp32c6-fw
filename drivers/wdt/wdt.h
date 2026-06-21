@@ -20,4 +20,6 @@ uint32_t wdt_disable(enum wdt_id id);
 uint32_t wdt_set_flashboot_mode(enum wdt_id id, bool enable);
 uint32_t wdt_feed(enum wdt_id id);
 
+void wdt_swd_enable_auto_feed(void);
+
 #endif /* WDT_H */

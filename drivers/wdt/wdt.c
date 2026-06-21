@@ -167,3 +167,10 @@ uint32_t wdt_feed(enum wdt_id id)
 
 	return 0;
 }
+
+void wdt_swd_enable_auto_feed(void)
+{
+	wdt_unlock(WDT_ID_SUPER);
+	mmio_setbits_32(WDT_SWD_CONFIG_REG(RTC_WDT_BASE), WDT_SWD_CONFIG_AUTO_FEED_EN_MASK);
+	wdt_lock(WDT_ID_SUPER);
+}

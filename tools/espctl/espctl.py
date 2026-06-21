@@ -119,6 +119,7 @@ class ESP32C6RomProtocol:
         return packet
 
     def enter_download_mode(self):
+        print("[ESPCTL] ENTER DOWNLOAD MODE")
         self.ser.dtr = False  # RTS=?, DTR=0 | Initialize to know values
         self.ser.rts = False  # RTS=0, DTR=0 | -
         self.ser.dtr = True  # RTS=0, DTR=1 | Set download mode flag
@@ -129,8 +130,10 @@ class ESP32C6RomProtocol:
         self.ser.rts = False  # RTS=0, DTR=0 | Clear download flag
 
     def reset(self):
+        print("[ESPCTL] RESET")
         self.ser.dtr = False  # RTS=?, DTR=0 | -
         self.ser.rts = False  # RTS=0, DTR=0 | Clear download flag
+        time.sleep(0.1)
         self.ser.rts = True  # RTS=1, DTR=0 | Reset SoC
         self.ser.rts = False  # RTS=0, DTR=0 | Exit Reset
 
@@ -398,9 +401,4 @@ if __name__ == "__main__":
         print(f"PROTOCOL ERROR: {e}")
     finally:
         protocol.reset()
-        while True:
-            protocol.flush()
-
-        if "protocol" in locals():
-            protocol.close()
-            print("Serial Closed")
+        protocol.flush()
