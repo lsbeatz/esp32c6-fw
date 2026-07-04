@@ -1,4 +1,5 @@
 import serial
+import serial.tools.list_ports
 import struct
 import time
 import argparse
@@ -30,10 +31,20 @@ ROM_DIRECTION_RESPONSE = 0x01
 ROM_HDR_FORMAT_COMMAND = "<BBHI"  # DIR | CMD | SIZE | CHECKSUM
 ROM_HDR_FORMAT_RESPONSE = "<BBHI"  # DIR | CMD | SIZE | VALUE
 
+# ESPRESSIF
+ESPRESSIF_USB_VID = 0x303A
+ESPRESSIF_USB_PID = 0x1001
+
 
 class ESP32C6RomProtocol:
     def __init__(self, port, baudrate=115200, timeout=0.1):
         self.ser = serial.Serial(port, baudrate, timeout=timeout)
+        self.is_espressif_usb = self.check_espressif_usb(port)
+
+    def check_espressif_usb(self, port):
+        target = next((p for p in serial.tools.list_ports.comports() if p.device == port), None)
+
+        return target is not None and target.vid == ESPRESSIF_USB_VID and target.pid == ESPRESSIF_USB_PID
 
     def slip_encode(self, data):
         encoded_data = bytearray()
@@ -120,18 +131,30 @@ class ESP32C6RomProtocol:
 
     def enter_download_mode(self):
         print("[ESPCTL] ENTER DOWNLOAD MODE")
-        self.ser.dtr = False  # RTS=?, DTR=0 | Initialize to know values
-        self.ser.rts = False  # RTS=0, DTR=0 | -
-        time.sleep(0.2)
-        self.ser.dtr = True  # RTS=0, DTR=1 | Set download mode flag
-        self.ser.rts = False  # RTS=0, DTR=1 | Propagete DTR
-        time.sleep(0.2)
-        self.ser.rts = True  # RTS=1, DTR=1 | -
-        self.ser.dtr = False  # RTS=1, DTR=0 | Reset SoC
-        time.sleep(0.2)
-        self.ser.rts = True  # RTS=1, DTR=0 | Propagete DTR
-        time.sleep(0.2)
-        # self.ser.rts = False  # RTS=0, DTR=0 | Clear download flag
+
+        if self.is_espressif_usb:
+            self.ser.dtr = False  # RTS=?, DTR=0 | Initialize to know values
+            self.ser.rts = False  # RTS=0, DTR=0 | -
+            time.sleep(0.2)
+            self.ser.dtr = True  # RTS=0, DTR=1 | Set download mode flag
+            self.ser.rts = False  # RTS=0, DTR=1 | Propagete DTR
+            time.sleep(0.2)
+            self.ser.rts = True  # RTS=1, DTR=1 | -
+            self.ser.dtr = False  # RTS=1, DTR=0 | Reset SoC
+            time.sleep(0.2)
+            self.ser.rts = True  # RTS=1, DTR=0 | Propagete DTR
+            time.sleep(0.2)
+            self.ser.rts = False  # RTS=0, DTR=0 | Clear download flag
+        else:
+            self.ser.dtr = False
+            self.ser.rts = False
+            time.sleep(0.2)
+            self.ser.rts = True  # EN=LOW, Reset SoC
+            time.sleep(0.1)
+            self.ser.dtr = True  # IO0=LOW
+            self.ser.rts = False  # EN=HIGH
+            time.sleep(0.2)
+            self.ser.dtr = False  # IO0=HIGH
 
     def reset(self):
         print("[ESPCTL] RESET")
@@ -146,7 +169,6 @@ class ESP32C6RomProtocol:
             line = self.ser.readline()
             if line:
                 decoded_line = line.decode("utf-8", "ignore").strip()
-                print(decoded_line)
             else:
                 break
 
