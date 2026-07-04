@@ -122,12 +122,16 @@ class ESP32C6RomProtocol:
         print("[ESPCTL] ENTER DOWNLOAD MODE")
         self.ser.dtr = False  # RTS=?, DTR=0 | Initialize to know values
         self.ser.rts = False  # RTS=0, DTR=0 | -
+        time.sleep(0.2)
         self.ser.dtr = True  # RTS=0, DTR=1 | Set download mode flag
         self.ser.rts = False  # RTS=0, DTR=1 | Propagete DTR
+        time.sleep(0.2)
         self.ser.rts = True  # RTS=1, DTR=1 | -
         self.ser.dtr = False  # RTS=1, DTR=0 | Reset SoC
+        time.sleep(0.2)
         self.ser.rts = True  # RTS=1, DTR=0 | Propagete DTR
-        self.ser.rts = False  # RTS=0, DTR=0 | Clear download flag
+        time.sleep(0.2)
+        # self.ser.rts = False  # RTS=0, DTR=0 | Clear download flag
 
     def reset(self):
         print("[ESPCTL] RESET")
