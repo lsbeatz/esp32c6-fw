@@ -173,6 +173,7 @@ class ESP32C6RomProtocol:
                 break
 
     def sync(self):
+        print("[ESPCTL] SYNC")
         data = bytearray([0x07, 0x07, 0x12, 0x20] + [0x55] * 32)
 
         for i in range(10):
@@ -197,6 +198,7 @@ class ESP32C6RomProtocol:
         raise RuntimeError("Failed to sync with ESP32C6 ROM Loader")
 
     def write_reg(self, address, value, mask=0xFFFFFFFF):
+        print("[ESPCTL] WRITE_REG")
         data = struct.pack("<IIII", address, value, mask, 1)
 
         self.send_command(ROM_COMMAND_WRITE_REG, data)
@@ -217,6 +219,7 @@ class ESP32C6RomProtocol:
         return True
 
     def read_reg(self, address):
+        print("[ESPCTL] READ_REG")
         data = struct.pack("<I", address)
         self.send_command(ROM_COMMAND_READ_REG, data)
 
@@ -238,6 +241,7 @@ class ESP32C6RomProtocol:
         return True
 
     def flash_begin(self, erase_size, nr_blocks, block_size, offset, encrypt=0):
+        print("[ESPCTL] FLASH_BEGIN")
         data = struct.pack("<IIIII", erase_size, nr_blocks, block_size, offset, encrypt)
         self.send_command(ROM_COMMAND_FLASH_BEGIN, data)
 
@@ -249,6 +253,7 @@ class ESP32C6RomProtocol:
         return True
 
     def flash_data(self, block_size, seq, payload):
+        print("[ESPCTL] FLASH_DATA")
         metadata = struct.pack("<IIII", block_size, seq, 0, 0)
         checksum = self.calculate_checksum(payload)
 
@@ -263,6 +268,7 @@ class ESP32C6RomProtocol:
         return True
 
     def flash_end(self, reboot=False):
+        print("[ESPCTL] FLASH_END")
         reboot_flag = 0x01 if reboot else 0x00
 
         data = struct.pack("<I", reboot_flag)
@@ -276,6 +282,7 @@ class ESP32C6RomProtocol:
         return True
 
     def mem_begin(self, total_size, nr_blocks, block_size, offset):
+        print("[ESPCTL] MEM_BEGIN")
         data = struct.pack("<IIII", total_size, nr_blocks, block_size, offset)
         self.send_command(ROM_COMMAND_MEM_BEGIN, data)
 
@@ -294,6 +301,7 @@ class ESP32C6RomProtocol:
         return True
 
     def mem_data(self, block_size, seq, payload):
+        print("[ESPCTL] MEM_DATA")
         metadata = struct.pack("<IIII", block_size, seq, 0, 0)
         checksum = self.calculate_checksum(payload)
         data = metadata + payload
@@ -314,6 +322,7 @@ class ESP32C6RomProtocol:
         return True
 
     def mem_end(self, execute_flag, entry_point):
+        print("[ESPCTL] MEM_END")
         data = struct.pack("<II", execute_flag, entry_point)
         self.send_command(ROM_COMMAND_MEM_END, data)
 
@@ -332,6 +341,7 @@ class ESP32C6RomProtocol:
         return True
 
     def spi_set_params(self, total_size):
+        print("[ESPCTL] SPI_SET_PARAMS")
         fl_id = 0
         block_size = 64 * 1024
         sector_size = 4 * 1024
@@ -364,6 +374,7 @@ class ESP32C6RomProtocol:
         return True
 
     def spi_attach(self, spi_if=0):
+        print("[ESPCTL] SPI_ATTACH")
         data = struct.pack("<II", spi_if, 0)
         self.send_command(ROM_COMMAND_SPI_ATTACH, data)
 
