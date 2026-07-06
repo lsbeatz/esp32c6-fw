@@ -71,3 +71,6 @@ __pycache__/
 
 # Vim
 *.swp
+
+# Hidden Files
+**/.*

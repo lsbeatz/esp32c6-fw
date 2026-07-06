@@ -5,6 +5,7 @@ description = "Python tools for esp32c6"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "kconfiglib>=14.1.0",
     "pyserial>=3.5",
     "toml>=0.10.2",
 ]

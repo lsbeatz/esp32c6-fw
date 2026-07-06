@@ -1,0 +1,19 @@
+config DRV_UART
+	bool "UART Driver"
+	default n
+	help
+		Use UART Driver
+
+if DRV_UART
+	rsource "uart/Kconfig"
+endif
+
+config DRV_WDT
+	bool "WDT Driver"
+	default n
+	help
+		Use WDT Driver
+
+if DRV_WDT
+	rsource "wdt/Kconfig"
+endif

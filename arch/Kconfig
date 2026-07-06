@@ -1,0 +1,9 @@
+config ARCH_RV32IMAC
+	bool "RV32IMAC"
+	default n
+	help
+		RISC-V 32bit CPU with IMAC extensions
+
+if ARCH_RV32IMAC
+	rsource "rv32imac/Kconfig"
+endif

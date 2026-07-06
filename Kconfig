@@ -1,0 +1,9 @@
+mainmenu "ESP32-C6 Firmware Configuration"
+
+menu "Architecture Configuration"
+	rsource "arch/Kconfig"
+endmenu
+
+menu "Driver Configuration"
+	rsource "drivers/Kconfig"
+endmenu
