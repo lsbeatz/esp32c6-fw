@@ -2,8 +2,8 @@
 
 #include <aspace.h>
 
-#include "uart_regs.h"
-#include "uart.h"
+#include <uart_regs.h>
+#include <uart.h>
 
 static bool initialized = false;
 

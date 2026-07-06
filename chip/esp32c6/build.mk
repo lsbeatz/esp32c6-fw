@@ -1,0 +1,3 @@
+CHIP := esp32c6
+
+INCLUDES += ${PATH_CHIP}/esp32c6

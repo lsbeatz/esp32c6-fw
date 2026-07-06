@@ -1,4 +1,4 @@
-#include <uart/uart.h>
+#include <uart.h>
 
 int main(void)
 {

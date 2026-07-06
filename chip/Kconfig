@@ -1,0 +1,11 @@
+choice CHIP
+	bool "Select Chip Model"
+	default CHIP_ESP32C6
+
+	config CHIP_ESP32C6
+		bool "ESP32C6"
+endchoice
+
+if CHIP_ESP32C6
+	rsource "esp32c6/Kconfig"
+endif

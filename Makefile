@@ -1,21 +1,24 @@
-include scripts/paths.mk
-include scripts/utils.mk
-include scripts/macro.mk
+TARGET ?= # mandatory
+CONFIG ?= # mandatory
+NAME   ?= # optional
 
 V ?= 0 # Verbose {0: quiet, 1: print all}
 Q := $(if $(filter 1,${V}),,@)
 
-TARGET ?= # mandatory
-NAME   ?= # optional
+include scripts/paths.mk
+include scripts/utils.mk
+include scripts/macro.mk
 
-ARCH  := rv32imac
-PLAT  := esp32c6
+include ${CONFIG}
 
-OUT_DIR := ${PATH_OUT}/${NAME}
-SRC_DIR := ${PATH_ARCH}/${ARCH}
-SRC_DIR += ${PATH_PLAT}
-SRC_DIR += ${PATH_DRIVERS}
-SRC_DIR += ${TARGET}
+include ${PATH_CHIP}/build.mk
+include ${PATH_ARCH}/build.mk
+include ${PATH_DRIVERS}/build.mk
+ifneq (${TARGET},)
+include ${TARGET}/build.mk
+endif
+
+DIR_OUT := $(if ${NAME},${PATH_OUT}/${NAME},${PATH_OUT})
 
 TOOLCHAIN_PATH ?= /opt/riscv/bin
 TOOLCHAIN_NAME ?= riscv32-unknown-elf
@@ -27,23 +30,19 @@ OBJDUMP	:= ${TOOLCHAIN_PATH}/${TOOLCHAIN_NAME}-objdump
 
 LDFLAGS  := -nostdlib
 CFLAGS   := -Wall -ffreestanding
-CFLAGS   += -march=${ARCH} -mabi=ilp32 -mcmodel=medlow
-CFLAGS   += ${addprefix -I,${SRC_DIR}}
+CFLAGS   += -march=${ARCH}
+CFLAGS   += -mabi=${ABI}
+CFLAGS   += -mcmodel=${CMODEL}
+CFLAGS   += ${addprefix -I,${INCLUDES}}
 ASMFLAGS := -march=${ARCH}_zicsr
 OBJFLAGS := -j .init -j .text* -j .*data
-MACROS   := -DARCH=${ARCH}
-MACROS   += -DPLAT=${PLAT}
 
-LSCRIPT := arch/${ARCH}/lscript.ld
-
-SRCS := $(shell find ${SRC_DIR} -name '*.c')
-ASMS := $(shell find ${SRC_DIR} -name '*.S')
-OBJS := $(addprefix ${OUT_DIR}/,${SRCS:%.c=%.c.o})
-OBJS += $(addprefix ${OUT_DIR}/,${ASMS:%.S=%.s.o})
-ELF  := ${OUT_DIR}/out.elf
-BIN  := ${OUT_DIR}/out.bin
-IMG  := ${OUT_DIR}/out.img
-DASM := ${OUT_DIR}/out.dasm
+OBJS := $(addprefix ${DIR_OUT}/,${srcs-y:%.c=%.c.o})
+OBJS += $(addprefix ${DIR_OUT}/,${asms-y:%.S=%.s.o})
+ELF  := ${DIR_OUT}/out.elf
+BIN  := ${DIR_OUT}/out.bin
+IMG  := ${DIR_OUT}/out.img
+DASM := ${DIR_OUT}/out.dasm
 
 DIRS := $(dir ${OBJS})
 
@@ -52,11 +51,10 @@ all: check dir ${BIN} ${DASM} ${IMG}
 
 check:
 	$(call check_defined,TARGET)
+	$(call check_defined,CONFIG)
 
 dir:
 	${Q} ${MKDIR} ${DIRS}
-
-${IMG}: image
 
 ${BIN}: ${ELF}
 	${Q} ${OBJCOPY} ${OBJFLAGS} -S ${ELF} -O binary $@
@@ -64,18 +62,20 @@ ${BIN}: ${ELF}
 ${DASM}: ${ELF}
 	${Q} ${OBJDUMP} -D ${ELF} > $@
 
-${ELF}: ${LSCRIPT} ${OBJS}
-	${Q} ${LD} ${LDFLAGS} -T ${LSCRIPT} -o ${ELF} ${OBJS}
+${ELF}: ${OBJS}
+	${Q} ${LD} ${LDFLAGS} -T ${LDSCRIPT} -o ${ELF} ${OBJS}
 
-${OUT_DIR}/%.c.o: %.c
+${DIR_OUT}/%.c.o: %.c
 	${Q} ${CC} ${CFLAGS} ${MACROS} -c $< -o $@
 
-${OUT_DIR}/%.s.o: %.S
+${DIR_OUT}/%.s.o: %.S
 	${Q} ${CC} ${ASMFLAGS} ${MACROS} -c $< -o $@
 
-.PHONY: image flash
-image: ${BIN}
+${IMG}: ${BIN}
 	${Q} ${PY} tools/imager/main.py ${BIN} ${IMG}
+
+.PHONY: image flash
+image: ${IMG}
 
 flash: ${IMG}
 	${Q} ${PY} tools/espctl/espctl.py ${IMG}
@@ -90,7 +90,7 @@ docs-regs:
 
 .PHONY: clean tags
 clean:
-	${Q} ${RM} ${OUT_DIR}
+	${Q} ${RM} ${DIR_OUT}
 
 tags:
 	@ctags -R

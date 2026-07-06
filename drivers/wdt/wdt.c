@@ -3,10 +3,9 @@
 #include <aspace.h>
 #include <mmio.h>
 
-#include <timg/timg_regs.h>
-
-#include <wdt/wdt_regs.h>
-#include <wdt/wdt.h>
+#include <timg_regs.h>
+#include <wdt_regs.h>
+#include <wdt.h>
 
 #define WDT_UNLOCK_KEY (0x50D83AA1)
 #define WDT_LOCK_KEY   (0x00000000)

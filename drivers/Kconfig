@@ -17,3 +17,13 @@ config DRV_WDT
 if DRV_WDT
 	rsource "wdt/Kconfig"
 endif
+
+config DRV_TIMG
+	bool "TIMG Driver"
+	default n
+	help
+		Use TIMG Driver
+
+if DRV_TIMG
+	rsource "timg/Kconfig"
+endif

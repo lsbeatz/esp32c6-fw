@@ -4,6 +4,10 @@ menu "Architecture Configuration"
 	rsource "arch/Kconfig"
 endmenu
 
+menu "Chip Configuration"
+	rsource "chip/Kconfig"
+endmenu
+
 menu "Driver Configuration"
 	rsource "drivers/Kconfig"
 endmenu

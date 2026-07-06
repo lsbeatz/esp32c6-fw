@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include "mmio.h"
 
-#include <wdt/wdt.h>
+#include <wdt.h>
 
 #define USB_SERIAL_JTAG_BASE (0x6000F000)
 
