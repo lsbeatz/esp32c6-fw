@@ -1,0 +1,19 @@
+config LIB_PICOLIBC
+	bool "Use Picolibc"
+	default n
+	help
+		Use Picolibc
+
+if LIB_PICOLIBC
+	rsource "picolibc/Kconfig"
+endif
+
+config LIB_STUB
+	bool "Use stub for libc binding"
+	default y
+	help
+		Stub defines libc related essential functions ex. sbrk
+
+if LIB_STUB
+	rsource "stub/Kconfig"
+endif

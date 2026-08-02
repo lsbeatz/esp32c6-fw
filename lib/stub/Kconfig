@@ -1,0 +1,6 @@
+config LIB_STUB_HEAP_SIZE
+	int "Heap size (bytes) served by sbrk"
+	default 32768
+	help
+		Upper bound on the heap region grown by sbrk. Starts at the
+		linker symbol _end and is additionally capped by the stack top.

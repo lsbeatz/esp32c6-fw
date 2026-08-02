@@ -11,3 +11,7 @@ endmenu
 menu "Driver Configuration"
 	rsource "drivers/Kconfig"
 endmenu
+
+menu "Library Configuration"
+	rsource "lib/Kconfig"
+endmenu

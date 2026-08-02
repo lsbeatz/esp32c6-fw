@@ -1,0 +1,33 @@
+config LIB_PICOLIBC_LIBC
+	bool "Use libc"
+	default y
+	help
+		Use libc module of picolibc from newlib
+
+if LIB_PICOLIBC_LIBC
+	rsource "libc/Kconfig"
+endif
+
+config LIB_PICOLIBC_LIBM
+	bool "Use libm"
+	default n
+	help
+		Use libm module of picolibc from newlib
+
+if LIB_PICOLIBC_LIBM
+	rsource "libm/Kconfig"
+endif
+
+config LIB_PICOLIBC_ATOMIC_UNGETC
+	bool "Enable atomic_ungetc"
+	default y
+	help
+		Enable atomic_ungetc
+
+config LIB_PICOLIBC_ENABLE_MALLOC
+	bool "Enable picolibc malloc"
+	default y
+	depends on LIB_PICOLIBC_LIBC_STDLIB
+	help
+		Compile picolibc's malloc/free/calloc/realloc. Requires an sbrk
+		implementation from the application (see LIB_STUB).

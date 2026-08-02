@@ -1,0 +1,65 @@
+config LIB_PICOLIBC_LIBC_ARGZ
+	bool "libc argz"
+	default n
+	help
+		Use argz from libc
+
+config LIB_PICOLIBC_LIBC_CTYPE
+	bool "libc ctype"
+	default y
+	help
+		Use ctype from libc
+
+config LIB_PICOLIBC_LIBC_ERRNO
+	bool "libc errno"
+	default y
+	help
+		Use errno from libc
+
+config LIB_PICOLIBC_LIBC_LOCALE
+	bool "libc locale"
+	default y
+	help
+		Use locale from libc
+
+config LIB_PICOLIBC_LIBC_MACHINE
+	bool "libc machine"
+	default n
+	help
+		Use machine from libc
+
+config LIB_PICOLIBC_LIBC_MISC
+	bool "libc misc"
+	default y
+	help
+		Use misc from libc
+
+config LIB_PICOLIBC_LIBC_SSP
+	bool "libc ssp"
+	default n
+	help
+		Use ssp from libc
+
+config LIB_PICOLIBC_LIBC_STDIO
+	bool "libc stdio"
+	default y
+	help
+		Use stdio from libc
+
+config LIB_PICOLIBC_LIBC_STDLIB
+	bool "libc stdlib"
+	default y
+	help
+		Use stdlib from libc
+
+config LIB_PICOLIBC_LIBC_STRING
+	bool "libc string"
+	default y
+	help
+		Use string from libc
+
+config LIB_PICOLIBC_LIBC_TIME
+	bool "libc time"
+	default y
+	help
+		Use time from libc
