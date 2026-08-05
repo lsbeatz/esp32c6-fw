@@ -44,13 +44,14 @@ OBJS := $(addprefix ${DIR_OUT}/,${srcs-y:%.c=%.c.o})
 OBJS += $(addprefix ${DIR_OUT}/,${asms-y:%.S=%.s.o})
 ELF  := ${DIR_OUT}/out.elf
 BIN  := ${DIR_OUT}/out.bin
+PAD  := ${DIR_OUT}/out.bin.pad
 IMG  := ${DIR_OUT}/out.img
 DASM := ${DIR_OUT}/out.dasm
 
 DIRS := $(sort $(dir ${OBJS}))
 
 .PHONY: all dir check
-all: check dir ${BIN} ${DASM} ${IMG}
+all: check dir ${BIN} ${PAD} ${DASM} ${IMG}
 
 check:
 	$(call check_defined,TARGET)
@@ -58,6 +59,15 @@ check:
 
 dir:
 	${Q} ${MKDIR} ${DIRS}
+
+${PAD}: ${BIN}
+	${Q} cp $< $@
+	${Q} filesize=$$(stat -c%s $@);                         \
+	remainder=$$(($$filesize % 16));                        \
+	if [ $$remainder -ne 0 ]; then                          \
+		pad=$$( Make=1 expr 16 - $$remainder );             \
+		dd if=/dev/zero bs=1 count=$$pad >> $@ status=none; \
+	fi
 
 ${BIN}: ${ELF}
 	${Q} ${OBJCOPY} ${OBJFLAGS} -S ${ELF} -O binary $@
@@ -74,8 +84,8 @@ ${DIR_OUT}/%.c.o: %.c
 ${DIR_OUT}/%.s.o: %.S
 	${Q} ${CC} ${ASMFLAGS} ${MACROS} -c $< -o $@
 
-${IMG}: ${BIN}
-	${Q} ${PY} tools/imager/main.py ${BIN} ${IMG}
+${IMG}: ${PAD}
+	${Q} ${PY} tools/imager/main.py ${PAD} ${IMG}
 
 .PHONY: image flash
 image: ${IMG}
