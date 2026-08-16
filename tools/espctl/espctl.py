@@ -164,15 +164,18 @@ class ESP32C6RomProtocol:
         print("[ESPCTL] RESET")
         self.ser.dtr = False  # RTS=?, DTR=0 | -
         self.ser.rts = False  # RTS=0, DTR=0 | Clear download flag
+        self.flush()
         time.sleep(0.1)
         self.ser.rts = True  # RTS=1, DTR=0 | Reset SoC
         self.ser.rts = False  # RTS=0, DTR=0 | Exit Reset
 
-    def flush(self):
+    def flush(self, do_print=False):
         while True:
             line = self.ser.readline()
             if line:
                 decoded_line = line.decode("utf-8", "ignore").strip()
+                if do_print:
+                    print(decoded_line)
             else:
                 break
 
@@ -402,14 +405,7 @@ class ESP32C6RomProtocol:
         self.ser.close()
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Load image to ESP32C6 flash")
-    parser.add_argument("input", type=str, help="Path to input image file")
-
-    args = parser.parse_args()
-
-    input_file = args.input
-
+def esp_flash(input_file):
     try:
         with open(input_file, "rb") as f:
             input_bin = f.read()
@@ -448,3 +444,34 @@ if __name__ == "__main__":
     finally:
         protocol.reset()
         protocol.flush()
+
+
+def esp_monitor():
+    protocol = ESP32C6RomProtocol(port="/dev/ttyACM0")
+
+    protocol.reset()
+
+    try:
+        while True:
+            protocol.flush(True)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        print("\n\n[ESPCTL] MONITOR DONE")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Control ESP32C6")
+    subparsers = parser.add_subparsers(dest="command", metavar="COMMAND", required=True, help="Available commands")
+
+    flash_parser = subparsers.add_parser("flash", help="Load image to ESP32C6 flash")
+    flash_parser.add_argument("input", type=str, help="Path to input image file")
+
+    monitor_parser = subparsers.add_parser("monitor", help="Monitor serial output")
+
+    args = parser.parse_args()
+
+    if args.command == "flash":
+        esp_flash(args.input)
+    elif args.command == "monitor":
+        esp_monitor()

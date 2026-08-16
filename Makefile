@@ -87,11 +87,14 @@ ${DIR_OUT}/%.s.o: %.S
 ${IMG}: ${PAD}
 	${Q} ${PY} tools/imager/main.py ${PAD} ${IMG}
 
-.PHONY: image flash
+.PHONY: image flash monitor
 image: ${IMG}
 
 flash: ${IMG}
-	${Q} ${PY} tools/espctl/espctl.py ${IMG}
+	${Q} ${PY} tools/espctl/espctl.py flash ${IMG}
+
+monitor:
+	${Q} ${PY} tools/espctl/espctl.py monitor
 
 .PHONY: docs docs-regs
 docs: docs-regs
