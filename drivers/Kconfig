@@ -8,6 +8,16 @@ if DRV_UART
 	rsource "uart/Kconfig"
 endif
 
+config DRV_USB_SERIAL_JTAG
+	bool "USB_SERIAL_JTAG Driver"
+	default n
+	help
+		Use USB_SERIAL_JTAG Driver
+
+if DRV_USB_SERIAL_JTAG
+	rsource "usb_serial_jtag/Kconfig"
+endif
+
 config DRV_WDT
 	bool "WDT Driver"
 	default n

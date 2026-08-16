@@ -1,0 +1,1145 @@
+desc = "USB Serial/JTAG"
+name = "usb_serial_jtag"
+prefix = "USB_SERIAL_JTAG"
+#alias = ""
+
+[[regs]]
+name = "EP1"
+desc = "FIFO access for the CDC-ACM data IN and OUT endpoints"
+offset = 0x0000
+
+	[[regs.fields]]
+	name = "RDWR_BYTE"
+	desc = "Write or read byte data to or from UART TX/RX FIFO"
+	bits = "7:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "EP1_CONF"
+desc = "Configuration and control registers for the CDC-ACM FIFOs"
+offset = 0x0004
+
+	[[regs.fields]]
+	name = "WR_DONE"
+	desc = "Configures whether to represent writing byte data to UART TX FIFO is done"
+	bits = "0"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "IN_EP_DATA_FREE"
+	desc = "Represents whether UART TX FIFO has space available"
+	bits = "1"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "OUT_EP_DATA_AVAIL"
+	desc = "Represents whether there is data in UART RX FIFO"
+	bits = "2"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "INT_RAW"
+desc = "Interrupt raw status register"
+offset = 0x0008
+
+	[[regs.fields]]
+	name = "JTAG_IN_FLUSH_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_JTAG_IN_FLUSH_INT"
+	bits = "0"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "SOF_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_SOF_INT"
+	bits = "1"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "SERIAL_OUT_RECV_PKT_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_SERIAL_OUT_RECV_PKT_INT"
+	bits = "2"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "SERIAL_IN_EMPTY_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_SERIAL_IN_EMPTY_INT"
+	bits = "3"
+	reset = 0x1
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "PID_ERR_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_PID_ERR_INT"
+	bits = "4"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "CRC5_ERR_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_CRC5_ERR_INT"
+	bits = "5"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "CRC16_ERR_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_CRC16_ERR_INT"
+	bits = "6"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "STUFF_ERR_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_STUFF_ERR_INT"
+	bits = "7"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "IN_TOKEN_REC_IN_EP1_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_IN_TOKEN_REC_IN_EP1_INT"
+	bits = "8"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "USB_BUS_RESET_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_USB_BUS_RESET_INT"
+	bits = "9"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "OUT_EP1_ZERO_PAYLOAD_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_OUT_EP1_ZERO_PAYLOAD_INT"
+	bits = "10"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "OUT_EP2_ZERO_PAYLOAD_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_OUT_EP2_ZERO_PAYLOAD_INT"
+	bits = "11"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "RTS_CHG_INT_RAW"
+	desc = "he raw interrupt status of USB_SERIAL_JTAG_RTS_CHG_INT"
+	bits = "12"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "DTR_CHG_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_DTR_CHG_INT"
+	bits = "13"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "GET_LINE_CODE_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_GET_LINE_CODE_INT"
+	bits = "14"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+	[[regs.fields]]
+	name = "SET_LINE_CODE_INT_RAW"
+	desc = "The raw interrupt status of USB_SERIAL_JTAG_SET_LINE_CODE_INT"
+	bits = "15"
+	reset = 0x0
+	access = "R/WTC/SS"
+
+[[regs]]
+name = "INT_ST"
+desc = "Interrupt status register"
+offset = 0x000C
+
+	[[regs.fields]]
+	name = "JTAG_IN_FLUSH_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_JTAG_IN_FLUSH_INT"
+	bits = "0"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "SOF_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_SOF_INT"
+	bits = "1"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "SERIAL_OUT_RECV_PKT_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_SERIAL_OUT_RECV_PKT_INT"
+	bits = "2"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "SERIAL_IN_EMPTY_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_SERIAL_IN_EMPTY_INT"
+	bits = "3"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "PID_ERR_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_PID_ERR_INT"
+	bits = "4"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "CRC5_ERR_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_CRC5_ERR_INT"
+	bits = "5"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "CRC16_ERR_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_CRC16_ERR_INT"
+	bits = "6"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "STUFF_ERR_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_STUFF_ERR_INT"
+	bits = "7"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "IN_TOKEN_REC_IN_EP1_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_IN_TOKEN_REC_IN_EP1_INT"
+	bits = "8"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "USB_BUS_RESET_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_USB_BUS_RESET_INT"
+	bits = "9"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "OUT_EP1_ZERO_PAYLOAD_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_OUT_EP1_ZERO_PAYLOAD_INT"
+	bits = "10"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "OUT_EP2_ZERO_PAYLOAD_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_OUT_EP2_ZERO_PAYLOAD_INT"
+	bits = "11"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "RTS_CHG_INT_ST"
+	desc = "he masked interrupt status of USB_SERIAL_JTAG_RTS_CHG_INT"
+	bits = "12"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "DTR_CHG_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_DTR_CHG_INT"
+	bits = "13"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "GET_LINE_CODE_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_GET_LINE_CODE_INT"
+	bits = "14"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "SET_LINE_CODE_INT_ST"
+	desc = "The masked interrupt status of USB_SERIAL_JTAG_SET_LINE_CODE_INT"
+	bits = "15"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "INT_ENA"
+desc = "Interrupt enable status register"
+offset = 0x0010
+
+	[[regs.fields]]
+	name = "JTAG_IN_FLUSH_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_JTAG_IN_FLUSH_INT"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "SOF_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_SOF_INT"
+	bits = "1"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "SERIAL_OUT_RECV_PKT_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_SERIAL_OUT_RECV_PKT_INT"
+	bits = "2"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "SERIAL_IN_EMPTY_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_SERIAL_IN_EMPTY_INT"
+	bits = "3"
+	reset = 0x1
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "PID_ERR_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_PID_ERR_INT"
+	bits = "4"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "CRC5_ERR_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_CRC5_ERR_INT"
+	bits = "5"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "CRC16_ERR_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_CRC16_ERR_INT"
+	bits = "6"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "STUFF_ERR_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_STUFF_ERR_INT"
+	bits = "7"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "IN_TOKEN_REC_IN_EP1_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_IN_TOKEN_REC_IN_EP1_INT"
+	bits = "8"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "USB_BUS_RESET_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_USB_BUS_RESET_INT"
+	bits = "9"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "OUT_EP1_ZERO_PAYLOAD_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_OUT_EP1_ZERO_PAYLOAD_INT"
+	bits = "10"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "OUT_EP2_ZERO_PAYLOAD_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_OUT_EP2_ZERO_PAYLOAD_INT"
+	bits = "11"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "RTS_CHG_INT_ENA"
+	desc = "he raw interrupt status of USB_SERIAL_JTAG_RTS_CHG_INT"
+	bits = "12"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "DTR_CHG_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_DTR_CHG_INT"
+	bits = "13"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "GET_LINE_CODE_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_GET_LINE_CODE_INT"
+	bits = "14"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "SET_LINE_CODE_INT_ENA"
+	desc = "Write 1 to enable USB_SERIAL_JTAG_SET_LINE_CODE_INT"
+	bits = "15"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "INT_CLR"
+desc = "Interrupt clear status register"
+offset = 0x0014
+
+	[[regs.fields]]
+	name = "JTAG_IN_FLUSH_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_JTAG_IN_FLUSH_INT"
+	bits = "0"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "SOF_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_SOF_INT"
+	bits = "1"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "SERIAL_OUT_RECV_PKT_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_SERIAL_OUT_RECV_PKT_INT"
+	bits = "2"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "SERIAL_IN_EMPTY_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_SERIAL_IN_EMPTY_INT"
+	bits = "3"
+	reset = 0x1
+	access = "WT"
+
+	[[regs.fields]]
+	name = "PID_ERR_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_PID_ERR_INT"
+	bits = "4"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "CRC5_ERR_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_CRC5_ERR_INT"
+	bits = "5"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "CRC16_ERR_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_CRC16_ERR_INT"
+	bits = "6"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "STUFF_ERR_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_STUFF_ERR_INT"
+	bits = "7"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "IN_TOKEN_REC_IN_EP1_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_IN_TOKEN_REC_IN_EP1_INT"
+	bits = "8"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "USB_BUS_RESET_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_USB_BUS_RESET_INT"
+	bits = "9"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "OUT_EP1_ZERO_PAYLOAD_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_OUT_EP1_ZERO_PAYLOAD_INT"
+	bits = "10"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "OUT_EP2_ZERO_PAYLOAD_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_OUT_EP2_ZERO_PAYLOAD_INT"
+	bits = "11"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "RTS_CHG_INT_CLR"
+	desc = "he raw interrupt status of USB_SERIAL_JTAG_RTS_CHG_INT"
+	bits = "12"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "DTR_CHG_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_DTR_CHG_INT"
+	bits = "13"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "GET_LINE_CODE_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_GET_LINE_CODE_INT"
+	bits = "14"
+	reset = 0x0
+	access = "WT"
+
+	[[regs.fields]]
+	name = "SET_LINE_CODE_INT_CLR"
+	desc = "Write 1 to clear USB_SERIAL_JTAG_SET_LINE_CODE_INT"
+	bits = "15"
+	reset = 0x0
+	access = "WT"
+
+[[regs]]
+name = "CONF0"
+desc = "PHY hardware configuration"
+offset = 0x0018
+
+	[[regs.fields]]
+	name = "PHY_SEL"
+	desc = "Configures whether to select internal or external PHY"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "EXCHG_PINS_OVERRIDE"
+	desc = "Configures whether to enable software control USB D+ D- exchange"
+	bits = "1"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "EXCHG_PINS"
+	desc = "Configures whether to enable USB D+ D- exchange"
+	bits = "2"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "VREFH"
+	desc = "Configures single-end input high threshold"
+	bits = "4:3"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "VREFL"
+	desc = "Configures single-end input low threshold"
+	bits = "6:5"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "VREF_OVERRIDE"
+	desc = "Configures whether to enable software control input threshold"
+	bits = "7"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "PAD_PULL_OVERRIDE"
+	desc = "Configures whether to enable software to control USB D+ D- pullup and pulldown"
+	bits = "8"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "DP_PULLUP"
+	desc = "Configures whether to enable USB D+ pull up when USB_SERIAL_JTAG_PAD_PULL_OVERRIDE is 1"
+	bits = "9"
+	reset = 0x1
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "DP_PULLDOWN"
+	desc = "Configures whether to enable USB D+ pull down when USB_SERIAL_JTAG_PAD_PULL_OVERRIDE is 1"
+	bits = "10"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "DM_PULLUP"
+	desc = "Configures whether to enable USB D- pull up when USB_SERIAL_JTAG_PAD_PULL_OVERRIDE is 1"
+	bits = "11"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "DM_PULLDOWN"
+	desc = "Configures whether to enable USB D- pull down when USB_SERIAL_JTAG_PAD_PULL_OVERRIDE is 1"
+	bits = "12"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "PULLUP_VALUE"
+	desc = "Configures the pull up value when USB_SERIAL_JTAG_PAD_PULL_OVERRIDE is 1"
+	bits = "13"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "PAD_ENABLE"
+	desc = "Configures whether to enable USB pad function"
+	bits = "14"
+	reset = 0x1
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "BRIDGE_EN"
+	desc = "Configures whether to disconnect usb_jtag and internal JTAG"
+	bits = "15"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "TEST"
+desc = "Registers used for debugging the PHY"
+offset = 0x001C
+
+	[[regs.fields]]
+	name = "ENABLE"
+	desc = "Configures whether to enable the test mode of the USB pad"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "USB_OE"
+	desc = "Configures whether to enable USB pad output"
+	bits = "1"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "TX_DP"
+	desc = "Configures value of USB D+ in test mode when USB_SERIAL_JTAG_TEST_USB_OE is 1"
+	bits = "2"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "TX_DM"
+	desc = "Configures value of USB D- in test mode when USB_SERIAL_JTAG_TEST_USB_OE is 1"
+	bits = "3"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "RX_RCV"
+	desc = "Represents the current logical level of the voltage difference between USB D- and USB D+ pads in test mode"
+	bits = "4"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "RX_DP"
+	desc = "Represents the logical level of the USB D+ pad in test mode"
+	bits = "5"
+	reset = 0x1
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "RX_DM"
+	desc = "Represents the logical level of the USB D- pad in test mode"
+	bits = "6"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "JFIFO_ST"
+desc = "JTAG FIFO status and control registers"
+offset = 0x0020
+
+	[[regs.fields]]
+	name = "IN_FIFO_CNT"
+	desc = "Represents JTAG IN FIFO counter"
+	bits = "1:0"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "IN_FIFO_EMPTY"
+	desc = "Represents whether JTAG IN FIFO is empty"
+	bits = "2"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "IN_FIFO_FULL"
+	desc = "Represents whether JTAG IN FIFO is full"
+	bits = "3"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "OUT_FIFO_CNT"
+	desc = "Represents JTAG OUT FIFO counter"
+	bits = "5:4"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "OUT_FIFO_EMPTY"
+	desc = "Represents whether JTAG OUT FIFO is empty"
+	bits = "6"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "OUT_FIFO_FULL"
+	desc = "Represents whether JTAG OUT FIFO is full"
+	bits = "7"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "IN_FIFO_RESET"
+	desc = "Configures whether to reset JTAG IN FIFO"
+	bits = "8"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "OUT_FIFO_RESET"
+	desc = "Configures whether to reset JTAG OUT FIFO"
+	bits = "9"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "FRAM_NUM"
+desc = "Last received SOF frame index register"
+offset = 0x0024
+
+	[[regs.fields]]
+	name = "SOF_FRAME_INDEX"
+	desc = "Represents frame index of received SOF frame"
+	bits = "10:0"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "IN_EP0_ST"
+desc = "Control IN endpoint status information"
+offset = 0x0028
+
+	[[regs.fields]]
+	name = "IN_EP0_STATE"
+	desc = "Represents state of IN Endpoint 0"
+	bits = "1:0"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "IN_EP0_WR_ADDR"
+	desc = "Represents write data address of IN endpoint 0"
+	bits = "8:2"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "IN_EP0_RD_ADDR"
+	desc = "Represents read data address of IN endpoint 0"
+	bits = "15:9"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "IN_EP1_ST"
+desc = "CDC-ACM IN endpoint status information"
+offset = 0x002C
+
+	[[regs.fields]]
+	name = "IN_EP1_STATE"
+	desc = "Represents state of IN Endpoint 1"
+	bits = "1:0"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "IN_EP1_WR_ADDR"
+	desc = "Represents write data address of IN endpoint 1"
+	bits = "8:2"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "IN_EP1_RD_ADDR"
+	desc = "Represents read data address of IN endpoint 1"
+	bits = "15:9"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "IN_EP2_ST"
+desc = "CDC-ACM interrupt IN endpoint status information"
+offset = 0x0030
+
+	[[regs.fields]]
+	name = "IN_EP2_STATE"
+	desc = "Represents state of IN Endpoint 2"
+	bits = "1:0"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "IN_EP2_WR_ADDR"
+	desc = "Represents write data address of IN endpoint 2"
+	bits = "8:2"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "IN_EP2_RD_ADDR"
+	desc = "Represents read data address of IN endpoint 2"
+	bits = "15:9"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "IN_EP3_ST"
+desc = "JTAG IN endpoint status information"
+offset = 0x0034
+
+	[[regs.fields]]
+	name = "IN_EP3_STATE"
+	desc = "Represents state of IN Endpoint 3"
+	bits = "1:0"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "IN_EP3_WR_ADDR"
+	desc = "Represents write data address of IN endpoint 3"
+	bits = "8:2"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "IN_EP3_RD_ADDR"
+	desc = "Represents read data address of IN endpoint 3"
+	bits = "15:9"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "OUT_EP0_ST"
+desc = "Control OUT endpoint status information"
+offset = 0x0038
+
+	[[regs.fields]]
+	name = "OUT_EP0_STATE"
+	desc = "Represents state of IN Endpoint 0"
+	bits = "1:0"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "OUT_EP0_WR_ADDR"
+	desc = "Represents write data address of IN endpoint 0"
+	bits = "8:2"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "OUT_EP0_RD_ADDR"
+	desc = "Represents read data address of IN endpoint 0"
+	bits = "15:9"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "OUT_EP1_ST"
+desc = "CDC-ACM OUT endpoint status information"
+offset = 0x003C
+
+	[[regs.fields]]
+	name = "OUT_EP1_STATE"
+	desc = "Represents state of IN Endpoint 1"
+	bits = "1:0"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "OUT_EP1_WR_ADDR"
+	desc = "Represents write data address of IN endpoint 1"
+	bits = "8:2"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "OUT_EP1_RD_ADDR"
+	desc = "Represents read data address of IN endpoint 1"
+	bits = "15:9"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "OUT_EP1_REC_DATA_CNT"
+	desc = "Represents data count in OUT endpoint 1 when one packet is received"
+	bits = "15:9"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "OUT_EP2_ST"
+desc = "JTAG OUT endpoint status information"
+offset = 0x0040
+
+	[[regs.fields]]
+	name = "OUT_EP2_STATE"
+	desc = "Represents state of IN Endpoint 2"
+	bits = "1:0"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "OUT_EP2_WR_ADDR"
+	desc = "Represents write data address of IN endpoint 2"
+	bits = "8:2"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "OUT_EP2_RD_ADDR"
+	desc = "Represents read data address of IN endpoint 2"
+	bits = "15:9"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "MISC_CONF"
+desc = "Clock enable control"
+offset = 0x0044
+
+	[[regs.fields]]
+	name = "CLK_EN"
+	desc = "Configures whether to force clock on for register"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MEM_CONF"
+desc = "Memory power control"
+offset = 0x0048
+
+	[[regs.fields]]
+	name = "MEM_PD"
+	desc = "Configures whether to power down USB memory"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MEM_CLK_EN"
+	desc = "Configures whether to force clock on for USB memory"
+	bits = "1"
+	reset = 0x1
+	access = "R/W"
+
+[[regs]]
+name = "CHIP_RST"
+desc = "CDC-ACM chip reset control"
+offset = 0x004C
+
+	[[regs.fields]]
+	name = "RTS"
+	desc = "Represents the state of RTS signal as set by the most recent SET_LINE_CODING command"
+	bits = "0"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "DTR"
+	desc = "Represents the state of DTR signal as set by the most recent SET_LINE_CODING command."
+	bits = "1"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "USB_UART_CHIP_RST_DIS"
+	desc = "Configures whether to disable chip reset from USB serial channel"
+	bits = "2"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "SET_LINE_CODE_W0"
+desc = "W0 of SET_LINE_CODING command"
+offset = 0x0050
+
+	[[regs.fields]]
+	name = "DW_DTE_RATE"
+	desc = "Represents the value of dwDTERate set by host through SET_LINE_CODING command"
+	bits = "31:0"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "SET_LINE_CODE_W1"
+desc = "W1 of SET_LINE_CODING command"
+offset = 0x0054
+
+	[[regs.fields]]
+	name = "BCHAR_FORMAT"
+	desc = "Represents the value of bCharFormat set by host through SET_LINE_CODING command"
+	bits = "7:0"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "BPARITY_TYPE"
+	desc = "Represents the value of bParityTpye set by host through SET_LINE_CODING command"
+	bits = "15:8"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "BDATA_BITS"
+	desc = "Represents the value of bDataBits set by host through SET_LINE_CODING command"
+	bits = "23:16"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "GET_LINE_CODE_W0"
+desc = "W0 of GET_LINE_CODING command"
+offset = 0x0058
+
+	[[regs.fields]]
+	name = "GET_DW_DTE_RATE"
+	desc = "Configures the value of dwDTERate set by software, which is requested by GET_LINE_CODING command"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "GET_LINE_CODE_W1"
+desc = "W1 of GET_LINE_CODING command"
+offset = 0x005C
+
+	[[regs.fields]]
+	name = "GET_BDATA_BITS"
+	desc = "Configures the value of bDataBits set by software, which is requested by GET_LINE_CODING command"
+	bits = "7:0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "GET_BPARITY_TYPE"
+	desc = "Configures the value of bParityType set by software, which is requested by GET_LINE_CODING command"
+	bits = "15:8"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "GET_BCHAR_FORMAT"
+	desc = "Configures the value of bCharFormat set by software, which is requested by GET_LINE_CODING command"
+	bits = "23:16"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "CONFIG_UPDATE"
+desc = "Configuration registers’ value update"
+offset = 0x0060
+
+	[[regs.fields]]
+	name = "CONFIG_UPDATE"
+	desc = "Configures whether to update the value of configuration registers from APB clock domain to 48 MHz clock domain"
+	bits = "0"
+	reset = 0x0
+	access = "WT"
+
+[[regs]]
+name = "SER_AFIFO_CONFIG"
+desc = "Serial AFIFO configure register"
+offset = 0x0064
+
+	[[regs.fields]]
+	name = "IN_AFIFO_RESET_WR"
+	desc = "Configures whether to reset CDC_ACM IN async FIFO write clock domain"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "IN_AFIFO_RESET_RD"
+	desc = "Configures whether to reset CDC_ACM IN async FIFO read clock domain"
+	bits = "1"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "OUT_AFIFO_RESET_WR"
+	desc = "Configures whether to reset CDC_ACM OUT async FIFO write clock domain"
+	bits = "2"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "OUT_AFIFO_RESET_RD"
+	desc = "Configures whether to reset CDC_ACM OUT async FIFO read clock domain"
+	bits = "3"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "OUT_AFIFO_REMPTY"
+	desc = "Represents CDC_ACM OUT async FIFO empty signal in read clock domain"
+	bits = "4"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "IN_AFIFO_WFULL"
+	desc = "Represents CDC_ACM IN async FIFO full signal in write clock domain"
+	bits = "5"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "BUS_RESET_ST"
+desc = "USB Bus reset status register"
+offset = 0x0068
+
+	[[regs.fields]]
+	name = "USB_BUS_RESET_ST"
+	desc = "Represents whether USB bus reset is released"
+	bits = "0"
+	reset = 0x1
+	access = "RO"
+
+[[regs]]
+name = "DATE"
+desc = "Date register"
+offset = 0x0080
+
+	[[regs.fields]]
+	name = "DATE"
+	desc = "Version control register"
+	bits = "31:0"
+	reset = 0x2109220
+	access = "R/W"

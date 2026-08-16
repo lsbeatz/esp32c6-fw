@@ -1,2 +1,3 @@
--f cheader docs/regs/drivers/timg.toml drivers/timg/timg_regs.h
--f cheader docs/regs/drivers/wdt.toml drivers/wdt/wdt_regs.h
+-f cheader docs/regs/drivers/timg.toml            drivers/timg/timg_regs.h
+-f cheader docs/regs/drivers/usb_serial_jtag.toml drivers/usb_serial_jtag/usb_serial_jtag_regs.h
+-f cheader docs/regs/drivers/wdt.toml             drivers/wdt/wdt_regs.h
