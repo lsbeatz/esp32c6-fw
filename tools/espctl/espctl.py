@@ -35,6 +35,10 @@ ROM_HDR_FORMAT_RESPONSE = "<BBHI"  # DIR | CMD | SIZE | VALUE
 ESPRESSIF_USB_VID = 0x303A
 ESPRESSIF_USB_PID = 0x1001
 
+# FLASH
+MAX_BLOCK_SIZE = 0x400
+FLASH_SECTOR_SIZE = 0x1000
+
 
 class ESP32C6RomProtocol:
     def __init__(self, port, baudrate=115200, timeout=0.1):
@@ -245,6 +249,8 @@ class ESP32C6RomProtocol:
         data = struct.pack("<IIIII", erase_size, nr_blocks, block_size, offset, encrypt)
         self.send_command(ROM_COMMAND_FLASH_BEGIN, data)
 
+        time.sleep(0.01 * nr_blocks)
+
         resp = self.recv_response(ROM_COMMAND_FLASH_BEGIN)
         if not resp:
             print("FLASH_BEGIN TIMEOUT")
@@ -418,9 +424,10 @@ if __name__ == "__main__":
         protocol.flush()
         protocol.sync()
 
-        erase_size = len(input_bin)
-        nr_blocks = 1
-        block_size = len(input_bin)
+        total_size = len(input_bin)
+        erase_size = total_size
+        nr_blocks = (total_size + MAX_BLOCK_SIZE - 1) // MAX_BLOCK_SIZE
+        block_size = MAX_BLOCK_SIZE
         offset = 0x0
 
         protocol.spi_attach(0)
@@ -428,8 +435,10 @@ if __name__ == "__main__":
 
         protocol.flash_begin(erase_size, nr_blocks, block_size, offset)
         for seq in range(0, nr_blocks):
-            payload = input_bin
+            payload = input_bin[0:MAX_BLOCK_SIZE]
+            payload += b"\xff" * (MAX_BLOCK_SIZE - len(payload))
             protocol.flash_data(block_size, seq, payload)
+            input_bin = input_bin[MAX_BLOCK_SIZE:]
         protocol.flash_end(True)
 
     except serial.SerialException as e:
