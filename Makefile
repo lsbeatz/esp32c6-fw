@@ -100,7 +100,7 @@ monitor:
 docs: docs-regs
 
 docs-regs:
-	${Q} cat docs/regs/docskit.cmds | while read -r line; do \
+	${Q} grep -Ev '^[[:space:]]*(#|$$)' docs/regs/docskit.cmds | while read -r line; do \
 		${UV} run tools/docskit/main.py $$line; \
 	done
 
