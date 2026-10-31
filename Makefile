@@ -33,7 +33,7 @@ OBJDUMP	:= ${TOOLCHAIN_PATH}/${TOOLCHAIN_NAME}-objdump
 
 LDFLAGS  := -nostdlib -Wl,--gc-sections
 CFLAGS   := -Wall -ffreestanding -O2 -ffunction-sections -fdata-sections
-CFLAGS   += -march=${ARCH}
+CFLAGS   += -march=${ARCH}_zicsr
 CFLAGS   += -mabi=${ABI}
 CFLAGS   += -mcmodel=${CMODEL}
 CFLAGS   += ${addprefix -I,${INCLUDES}}
