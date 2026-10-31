@@ -1,0 +1,183 @@
+desc = "Core Local Interruptor (CLINT)"
+name = "clint"
+prefix = "CLINT"
+#alias = ""
+
+[[regs]]
+name = "MSIP"
+desc = "Core local machine software interrupt pending register"
+offset = 0x1800
+
+	[[regs.fields]]
+	name = "MSIP"
+	desc = "Configures the pending status of the machine software interrupt. 0: Not pending 1: Pending"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MTIMECTL"
+desc = "Core local machine timer interrupt control/status register"
+offset = 0x1804
+
+	[[regs.fields]]
+	name = "MTCE"
+	desc = "Configures whether to enable the CLINT timer counter. 0: Not enable 1: Enable"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MTIE"
+	desc = "Write 1 to enable the machine timer interrupt"
+	bits = "1"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MTIP"
+	desc = "Represents the pending status of the machine timer interrupt. 0: Not pending 1: Pending"
+	bits = "2"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "MTOF"
+	desc = "Configures whether the machine timer overflows. 0: Not overflow 1: Overflow"
+	bits = "3"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MTIME_LO"
+desc = "64b core local timer counter value [31:0]"
+offset = 0x1808
+
+	[[regs.fields]]
+	name = "MTIME_LO"
+	desc = "Configures the 64-bit CLINT timer counter value [31:0]"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MTIME_HI"
+desc = "64b core local timer counter value [63:32]"
+offset = 0x180C
+
+	[[regs.fields]]
+	name = "MTIME_HI"
+	desc = "Configures the 64-bit CLINT timer counter value [63:32]"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MTIMECMP_LO"
+desc = "64b core local machine timer compare value [31:0]"
+offset = 0x1810
+
+	[[regs.fields]]
+	name = "MTIMECMP_LO"
+	desc = "Configures the 64-bit machine timer compare value [31:0]"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MTIMECMP_HI"
+desc = "64b core local machine timer compare value [63:32]"
+offset = 0x1814
+
+	[[regs.fields]]
+	name = "MTIMECMP_HI"
+	desc = "Configures the 64-bit machine timer compare value [63:32]"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "USIP"
+desc = "Core local user software interrupt pending register"
+offset = 0x1C00
+
+	[[regs.fields]]
+	name = "USIP"
+	desc = "Configures the pending status of the user software interrupt. 0: Not pending 1: Pending"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "UTIMECTL"
+desc = "Core local user timer interrupt control/status register"
+offset = 0x1C04
+
+	[[regs.fields]]
+	name = "UTIE"
+	desc = "Write 1 to enable the user timer interrupt"
+	bits = "1"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "UTIP"
+	desc = "Represents the pending status of the user timer interrupt"
+	bits = "2"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "UTOF"
+	desc = "Configures whether the user timer overflows. 0: Not overflow 1: Overflow"
+	bits = "3"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "UTIME_LO"
+desc = "Read-only 64b core local timer counter value [31:0]"
+offset = 0x1C08
+
+	[[regs.fields]]
+	name = "UTIME_LO"
+	desc = "Represents the read-only 64-bit CLINT timer counter value [31:0]"
+	bits = "31:0"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "UTIME_HI"
+desc = "Read-only 64b core local timer counter value [63:32]"
+offset = 0x1C0C
+
+	[[regs.fields]]
+	name = "UTIME_HI"
+	desc = "Represents the read-only 64-bit CLINT timer counter value [63:32]"
+	bits = "31:0"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "UTIMECMP_LO"
+desc = "64b core local user timer compare value [31:0]"
+offset = 0x1C10
+
+	[[regs.fields]]
+	name = "UTIMECMP_LO"
+	desc = "Configures the 64-bit user timer compare value [31:0]"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "UTIMECMP_HI"
+desc = "64b core local user timer compare value [63:32]"
+offset = 0x1C14
+
+	[[regs.fields]]
+	name = "UTIMECMP_HI"
+	desc = "Configures the 64-bit user timer compare value [63:32]"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
