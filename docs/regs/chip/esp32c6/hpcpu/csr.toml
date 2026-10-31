@@ -1,0 +1,1095 @@
+desc = "Configuration and Status Registers (CSRs)"
+name = "csr"
+prefix = "CSR"
+#alias = ""
+
+[[regs]]
+name = "MVENDORID"
+desc = "Machine Vendor ID"
+offset = 0x0F11
+
+	[[regs.fields]]
+	name = "MVENDORID"
+	desc = "Represents Vendor ID"
+	bits = "31:0"
+	reset = 0x00000612
+	access = "RO"
+
+[[regs]]
+name = "MARCHID"
+desc = "Machine Architecture ID"
+offset = 0x0F12
+
+	[[regs.fields]]
+	name = "MARCHID"
+	desc = "Represents Architecture ID"
+	bits = "31:0"
+	reset = 0x80000002
+	access = "RO"
+
+[[regs]]
+name = "MIMPID"
+desc = "Machine Implementation ID"
+offset = 0x0F13
+
+	[[regs.fields]]
+	name = "MIMPID"
+	desc = "Represents Implementation ID"
+	bits = "31:0"
+	reset = 0x00000002
+	access = "RO"
+
+[[regs]]
+name = "MHARTID"
+desc = "Machine Hart ID"
+offset = 0x0F14
+
+	[[regs.fields]]
+	name = "MHARTID"
+	desc = "Represents Hart ID"
+	bits = "31:0"
+	reset = 0x00000000
+	access = "RO"
+
+[[regs]]
+name = "MSTATUS"
+desc = "Machine Mode Status"
+offset = 0x0300
+
+	[[regs.fields]]
+	name = "UIE"
+	desc = "Write 1 to enable the global user mode interrupt"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MIE"
+	desc = "Write 1 to enable the global machine mode interrupt"
+	bits = "3"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "UPIE"
+	desc = "Write 1 to enable the user previous interrupt (before trap)"
+	bits = "4"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MPIE"
+	desc = "Write 1 to enable the machine previous interrupt (before trap)"
+	bits = "7"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MPP"
+	desc = "Configures machine previous privilege mode (before trap)."
+	bits = "12:11"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "TW"
+	desc = "Configures whether to cause illegal instruction exception when WFI (Wait-for-Interrupt) instruction is executed in U mode"
+	bits = "21"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MISA"
+desc = "Machine ISA"
+offset = 0x0301
+
+	[[regs.fields]]
+	name = "A"
+	desc = "Atomic Extension"
+	bits = "0"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "C"
+	desc = "Compressed Extension"
+	bits = "2"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "D"
+	desc = "Double-precision floating-point extension"
+	bits = "3"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "E"
+	desc = "RV32E base ISA"
+	bits = "4"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "F"
+	desc = "Single-precision floating-point extension"
+	bits = "5"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "G"
+	desc = "Additional standard extensions present"
+	bits = "6"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "H"
+	desc = "Hypervisor extension"
+	bits = "7"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "I"
+	desc = "RV32I base ISA"
+	bits = "8"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "M"
+	desc = "Integer Multiply/Divide extension"
+	bits = "12"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "N"
+	desc = "User-level interrupts supported"
+	bits = "13"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "Q"
+	desc = "Quad-precision floating-point extension"
+	bits = "16"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "S"
+	desc = "Supervisor mode implemented"
+	bits = "18"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "U"
+	desc = "User mode implemented"
+	bits = "20"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "X"
+	desc = "Non-standard extensions present"
+	bits = "23"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "MXL"
+	desc = "Machine XLEN"
+	bits = "31:30"
+	reset = 0x1
+	access = "RO"
+
+[[regs]]
+name = "MIDELEG"
+desc = "Machine Interrupt Delegation Register"
+offset = 0x0303
+
+	[[regs.fields]]
+	name = "MIDELEG"
+	desc = "Configures the U mode delegation state for each interrupt ID. Below interrupts are delegated to U mode by default: Bit 0: User software interrupt (CLINT) Bit 4: User timer interrupt (CLINT) Bit 8: User external interrupt"
+	bits = "31:0"
+	reset = 0x00000111
+	access = "R/W"
+
+[[regs]]
+name = "MIE"
+desc = "Machine Interrupt Enable Register"
+offset = 0x0304
+
+	[[regs.fields]]
+	name = "USIE"
+	desc = "Write 1 to enable the user software interrupt"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MXIE2_1"
+	desc = "Write 1 to enable the 28 external interrupts"
+	bits = "2:1"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MSIE"
+	desc = "Write 1 to enable the machine software interrupt"
+	bits = "3"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "UTIE"
+	desc = "Write 1 to enable the user timer interrupt"
+	bits = "4"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MXIE6_5"
+	desc = "Write 1 to enable the 28 external interrupts"
+	bits = "6:5"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MTIE"
+	desc = "Write 1 to enable the machine timer interrupt"
+	bits = "7"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MXIE31_8"
+	desc = "Write 1 to enable the 28 external interrupts"
+	bits = "31:8"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MTVEC"
+desc = "Machine Trap Vector"
+offset = 0x0305
+
+	[[regs.fields]]
+	name = "MODE"
+	desc = "Represents whether machine mode interrupts are vectored. Only vectored mode 0x1 is available"
+	bits = "1:0"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "BASE"
+	desc = "Configures the higher 24 bits of trap vector base address aligned to 256 bytes"
+	bits = "31:8"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MSCRATCH"
+desc = "Machine Scratch"
+offset = 0x0340
+
+	[[regs.fields]]
+	name = "MSCRATCH"
+	desc = "Configures machine scratch information for custom use"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MEPC"
+desc = "Machine Trap Program Counter"
+offset = 0x0341
+
+	[[regs.fields]]
+	name = "MEPC"
+	desc = "Configures the machine trap/exception program counter. This is automatically updated with address of the instruction which was about to be executed while CPU encountered the most recent trap"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MCAUSE"
+desc = "Machine Trap Cause"
+offset = 0x0342
+
+	[[regs.fields]]
+	name = "EXCEPTION_CODE"
+	desc = "This field is automatically updated with unique ID of the most recent exception or interrupt due to which CPU entered trap. Possible exception IDs are: 0x1: PMP instruction access fault 0x2: Illegal instruction 0x3: Hardware breakpoint/watchpoint or EBREAK 0x5: PMP load access fault 0x6: Misaligned store address or AMO address 0x7: PMP store access or AMO access fault 0x8: ECALL from U mode 0xb: ECALL from M mode Other values: reserved. Note: Exception ID 0x0 (instruction access misaligned) is not present because CPU always masks the lowest bit of the address during instruction fetch"
+	bits = "4:0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "INTERRUPT_FLAG"
+	desc = "This flag is automatically updated when CPU enters trap. If this is found to be set, indicates that the latest trap occurred due to an interrupt. For exceptions it remains unset. Note: The interrupt controller is using up IDs in range 1-2, 5-6 and 8-31 for all external interrupt sources. This is different from the RISC-V standard which has reserved IDs in range 0-15 for core local interrupts only. Although local interrupt sources (CLINT) do use the reserved IDs 0, 3, 4 and 7"
+	bits = "31"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MTVAL"
+desc = "Machine Trap Value"
+offset = 0x0343
+
+	[[regs.fields]]
+	name = "MTVAL"
+	desc = "Configures machine trap value. This is automatically updated with an exception dependent data which may be useful for handling that exception. Data is to be interpreted depending upon exception IDs: 0x1: Faulting virtual address of instruction 0x2: Faulting instruction opcode 0x5: Faulting data address of load operation 0x7: Faulting data address of store operation. Note: The value of this register is not valid for other exception IDs and interrupts"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MIP"
+desc = "Machine Interrupt Pending"
+offset = 0x0344
+
+	[[regs.fields]]
+	name = "USIP"
+	desc = "Configures the pending status of the user software interrupt. 0: Not pending 1: Pending"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MXIP2_1"
+	desc = "Configures the pending status of the 28 external interrupts. 0: Not pending 1: Pending"
+	bits = "2:1"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MSIP"
+	desc = "Configures the pending status of the machine software interrupt. 0: Not pending 1: Pending"
+	bits = "3"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "UTIP"
+	desc = "Configures the pending status of the user timer interrupt. 0: Not pending 1: Pending"
+	bits = "4"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MXIP6_5"
+	desc = "Configures the pending status of the 28 external interrupts. 0: Not pending 1: Pending"
+	bits = "6:5"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MTIP"
+	desc = "Configures the pending status of the machine timer interrupt. 0: Not pending 1: Pending"
+	bits = "7"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MXIP31_8"
+	desc = "Configures the pending status of the 28 external interrupts. 0: Not pending 1: Pending"
+	bits = "31:8"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "USTATUS"
+desc = "User Mode Status"
+offset = 0x0000
+
+	[[regs.fields]]
+	name = "UIE"
+	desc = "Write 1 to enable the global user mode interrupt"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "UPIE"
+	desc = "Write 1 to enable the user previous interrupt (before trap)"
+	bits = "4"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "UIE"
+desc = "User Interrupt Enable Register"
+offset = 0x0004
+
+	[[regs.fields]]
+	name = "USIE"
+	desc = "Write 1 to enable the user software interrupt"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "UXIE2_1"
+	desc = "Write 1 to enable the 28 external interrupts delegated to U mode"
+	bits = "2:1"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "UTIE"
+	desc = "Write 1 to enable the user timer interrupt"
+	bits = "4"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "UXIE6_5"
+	desc = "Write 1 to enable the 28 external interrupts delegated to U mode"
+	bits = "6:5"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "UXIE31_8"
+	desc = "Write 1 to enable the 28 external interrupts delegated to U mode"
+	bits = "31:8"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "UTVEC"
+desc = "User Trap Vector"
+offset = 0x0005
+
+	[[regs.fields]]
+	name = "MODE"
+	desc = "Represents if user mode interrupts are vectored. Only vectored mode 0x1 is available"
+	bits = "1:0"
+	reset = 0x1
+	access = "RO"
+
+	[[regs.fields]]
+	name = "BASE"
+	desc = "Configures the higher 24 bits of trap vector base address aligned to 256 bytes"
+	bits = "31:8"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "USCRATCH"
+desc = "User Scratch"
+offset = 0x0040
+
+	[[regs.fields]]
+	name = "USCRATCH"
+	desc = "Configures user scratch information for custom use"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "UEPC"
+desc = "User Trap Program Counter"
+offset = 0x0041
+
+	[[regs.fields]]
+	name = "UEPC"
+	desc = "Configures the user trap program counter. This is automatically updated with address of the instruction which was about to be executed in User mode while CPU encountered the most recent user mode interrupt"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "UCAUSE"
+desc = "User Trap Cause"
+offset = 0x0042
+
+	[[regs.fields]]
+	name = "EXCEPTION_CODE"
+	desc = "This field is automatically updated with the unique ID of the most recent user mode interrupt due to which CPU entered trap"
+	bits = "4:0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "INTERRUPT_FLAG"
+	desc = "This flag would always be set because CPU can only enter trap due to user mode interrupts as exception delegation is unsupported"
+	bits = "31"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "UIP"
+desc = "User Interrupt Pending"
+offset = 0x0044
+
+	[[regs.fields]]
+	name = "USIP"
+	desc = "Configures the pending status of the user software interrupt. 0: Not pending 1: Pending"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "UXIP2_1"
+	desc = "Configures the pending status of the 28 external interrupts delegated to user mode. 0: Not pending 1: Pending"
+	bits = "2:1"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "UTIP"
+	desc = "Configures the pending status of the user timer interrupt. 0: Not pending 1: Pending"
+	bits = "4"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "UXIP6_5"
+	desc = "Configures the pending status of the 28 external interrupts delegated to user mode. 0: Not pending 1: Pending"
+	bits = "6:5"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "UXIP31_8"
+	desc = "Configures the pending status of the 28 external interrupts delegated to user mode. 0: Not pending 1: Pending"
+	bits = "31:8"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "PMPCFG"
+desc = "Physical memory protection configuration"
+offset = 0x03A0
+count = 4
+stride = 1
+
+	[[regs.fields]]
+	name = "R"
+	desc = "Configures read permission of the PMP entry"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+	count = 4
+	stride = 8
+
+	[[regs.fields]]
+	name = "W"
+	desc = "Configures write permission of the PMP entry"
+	bits = "1"
+	reset = 0x0
+	access = "R/W"
+	count = 4
+	stride = 8
+
+	[[regs.fields]]
+	name = "X"
+	desc = "Configures execute permission of the PMP entry"
+	bits = "2"
+	reset = 0x0
+	access = "R/W"
+	count = 4
+	stride = 8
+
+	[[regs.fields]]
+	name = "A"
+	desc = "Configures address-matching mode of the PMP entry. 0: OFF 1: TOR 2: NA4 3: NAPOT"
+	bits = "4:3"
+	reset = 0x0
+	access = "R/W"
+	count = 4
+	stride = 8
+
+	[[regs.fields]]
+	name = "L"
+	desc = "Configures lock of the PMP entry"
+	bits = "7"
+	reset = 0x0
+	access = "R/W"
+	count = 4
+	stride = 8
+
+[[regs]]
+name = "PMPADDR"
+desc = "Physical memory protection address register"
+offset = 0x03B0
+count = 16
+stride = 1
+
+	[[regs.fields]]
+	name = "ADDR"
+	desc = "Configures bits [33:2] of the PMP entry address as defined in RISC-V Privileged Architecture v1.10"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "TSELECT"
+desc = "Trigger Select Register"
+offset = 0x07A0
+
+	[[regs.fields]]
+	name = "TSELECT"
+	desc = "Configures the index (0-3) of the selected trigger unit"
+	bits = "1:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "TDATA1"
+desc = "Trigger Abstract Data 1"
+offset = 0x07A1
+
+	[[regs.fields]]
+	name = "DATA"
+	desc = "Configures the abstract tdata1 content. This will always be interpreted as fields of mcontrol since only match type (0x2) triggers are supported"
+	bits = "26:0"
+	reset = 0x3E00000
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "DMODE"
+	desc = "Set to 1 if a trigger is being used by the debugger. 0: Both Debug and M mode can write the tdata1 and tdata2 registers at the selected tselect 1: Only Debug Mode can write the tdata1 and tdata2 registers at the selected tselect. Writes from other modes are ignored. Note: Only writable from debug mode"
+	bits = "27"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "TYPE"
+	desc = "Represents the trigger type. This field is reserved since only match type (0x2) triggers are supported"
+	bits = "31:28"
+	reset = 0x2
+	access = "RO"
+
+[[regs]]
+name = "TDATA2"
+desc = "Trigger Abstract Data 2"
+offset = 0x07A2
+
+	[[regs.fields]]
+	name = "TDATA2"
+	desc = "Configures the abstract tdata2 content. This will always be interpreted as maddress since only match type (0x2) triggers are supported"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "TCONTROL"
+desc = "Global Trigger Control"
+offset = 0x07A5
+
+	[[regs.fields]]
+	name = "MTE"
+	desc = "Configures whether to enable the machine mode trigger. When CPU is taking a machine mode trap, its value is automatically pushed into mpte, so this becomes 0 and triggers with action=0 are disabled globally. When CPU is executing MRET, the value of mpte is automatically popped back into this"
+	bits = "3"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MPTE"
+	desc = "Configures whether to enable the machine mode previous trigger. When CPU is taking a machine mode trap, the value of mte is automatically pushed into this. When CPU is executing MRET, its value is popped back into mte, so this becomes 0"
+	bits = "7"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MCONTROL"
+desc = "Match Control (tdata1 view)"
+offset = 0x07A1
+
+	[[regs.fields]]
+	name = "LOAD"
+	desc = "Set this for configuring the selected trigger to fire right before a load operation with matching data address is executed by the CPU"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "STORE"
+	desc = "Set this for configuring the selected trigger to fire right before a store operation with matching data address is executed by the CPU"
+	bits = "1"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "EXECUTE"
+	desc = "Set this for configuring the selected trigger to fire right before an instruction with matching virtual address is executed by the CPU"
+	bits = "2"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "U"
+	desc = "Set this for enabling selected trigger to operate in user mode"
+	bits = "3"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "M"
+	desc = "Set this for enabling selected trigger to operate in machine mode"
+	bits = "6"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "MATCH"
+	desc = "Configures the selected trigger to perform one of the available matching operations on a data/instruction address. 0x0: exact byte match, i.e. address corresponding to one of the bytes in an access must match the value of maddress exactly 0x1: NAPOT match, i.e. at least one of the bytes of an access must lie in the NAPOT region specified in maddress. Note: Writing a larger value will clip it to the largest possible value 0x1"
+	bits = "10:7"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "ACTION"
+	desc = "Configures the selected trigger to perform one of the available actions when firing. 0x0: cause breakpoint exception 0x1: enter debug mode (only valid when dmode = 1). Note: Writing an invalid value will set this to the default value 0x0"
+	bits = "15:12"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "HIT"
+	desc = "This is found to be 1 if the selected trigger had fired previously. This bit is to be cleared manually"
+	bits = "20"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "DMODE"
+	desc = "Same as dmode in tdata1"
+	bits = "27"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MADDRESS"
+desc = "Match Address (tdata2 view)"
+offset = 0x07A2
+
+	[[regs.fields]]
+	name = "MADDRESS"
+	desc = "Configures the address used by the selected trigger when performing match operation. This is decoded as NAPOT when match=1 in mcontrol"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "DCSR"
+desc = "Debug Control and Status"
+offset = 0x07B0
+
+	[[regs.fields]]
+	name = "PRV"
+	desc = "Contains the privilege level the core was operating in when Debug Mode was entered. A debugger can change this value to change the core's privilege level when exiting Debug Mode. Only 0x3 (machine mode) and 0x0 (user mode) are supported"
+	bits = "1:0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "STEP"
+	desc = "When set and not in Debug Mode, the core will only execute a single instruction and then enter Debug Mode. If the instruction does not complete due to an exception, the core will immediately enter Debug Mode before executing the trap handler, with appropriate exception registers set. Setting this bit does not mask interrupts"
+	bits = "2"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "CAUSE"
+	desc = "Explains why Debug Mode was entered. When there are multiple reasons to enter Debug Mode in a single cycle, the cause with the highest priority number is the one written. 1: An ebreak instruction was executed (priority 3) 2: The Trigger Module caused a halt (priority 4) 3: haltreq was set (priority 2) 4: The CPU core single stepped because step was set (priority 1) Other values are reserved"
+	bits = "8:6"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "STOPTIME"
+	desc = "This feature is not implemented. Debugger will always read this bit as 0"
+	bits = "9"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "STOPCOUNT"
+	desc = "This feature is not implemented. Debugger will always read this bit as 0"
+	bits = "10"
+	reset = 0x0
+	access = "RO"
+
+	[[regs.fields]]
+	name = "EBREAKU"
+	desc = "When 1, ebreak instructions in User/Application Mode enter Debug Mode"
+	bits = "12"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "EBREAKM"
+	desc = "When 1, ebreak instructions in Machine Mode enter Debug Mode"
+	bits = "15"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "XDEBUGVER"
+	desc = "Represents the debug version. 4: External debug support exists"
+	bits = "31:28"
+	reset = 0x4
+	access = "RO"
+
+[[regs]]
+name = "DPC"
+desc = "Debug PC"
+offset = 0x7B1
+
+	[[regs.fields]]
+	name = "DPC"
+	desc = "Upon entry to debug mode, dpc is written with the virtual address of the instruction that encountered the exception. When resuming, the CPU core's PC is updated to the virtual address stored in dpc. A debugger may write dpc to change where the CPU resumes"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "DSCRATCH0"
+desc = "Debug Scratch Register 0"
+offset = 0x07B2
+
+	[[regs.fields]]
+	name = "DSCRATCH0"
+	desc = "Used by Debug Module internally"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "DSCRATCH1"
+desc = "Debug Scratch Register 1"
+offset = 0x07B3
+
+	[[regs.fields]]
+	name = "DSCRATCH1"
+	desc = "Used by Debug Module internally"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MPCER"
+desc = "Machine Performance Counter Event"
+offset = 0x07E0
+
+	[[regs.fields]]
+	name = "CYCLE"
+	desc = "Count Clock Cycles. Cycle count does not increment during WFI mode. Note: Each bit selects a specific event for counter to increment. If more than one event is selected and occurs simultaneously, then counter increments by one only"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "INST"
+	desc = "Count Instructions"
+	bits = "1"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "LD_HAZARD"
+	desc = "Count Load Hazards"
+	bits = "2"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "JMP_HAZARD"
+	desc = "Count Jump Hazards"
+	bits = "3"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "IDLE"
+	desc = "Count IDLE Cycles"
+	bits = "4"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "LOAD"
+	desc = "Count Loads"
+	bits = "5"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "STORE"
+	desc = "Count Stores"
+	bits = "6"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "JMP_UNCOND"
+	desc = "Count Unconditional Jumps"
+	bits = "7"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "BRANCH"
+	desc = "Count Branches"
+	bits = "8"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "BRANCH_TAKEN"
+	desc = "Count Branches Taken"
+	bits = "9"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "INST_COMP"
+	desc = "Count Compressed Instructions"
+	bits = "10"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "MPCMR"
+desc = "Machine Performance Counter Mode"
+offset = 0x07E1
+
+	[[regs.fields]]
+	name = "COUNT_EN"
+	desc = "Configures whether to enable the counter"
+	bits = "0"
+	reset = 0x1
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "COUNT_SAT"
+	desc = "Configures counter saturation"
+	bits = "1"
+	reset = 0x1
+	access = "R/W"
+
+[[regs]]
+name = "MPCCR"
+desc = "Machine Performance Counter Count"
+offset = 0x07E2
+
+	[[regs.fields]]
+	name = "MPCCR"
+	desc = "Represents the machine performance counter value"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "CPU_GPIO_OEN"
+desc = "GPIO Output Enable"
+offset = 0x0803
+
+	[[regs.fields]]
+	name = "CPU_GPIO_OEN"
+	desc = "Configures whether to enable GPIOn (n=0 ~ 21) output. CPU_GPIO_OEN[7:0] correspond to output enable signals cpu_gpio_out_oen[7:0] in GPIO Matrix. 0: Disable GPIO output 1: Enable GPIO output"
+	bits = "7:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "CPU_GPIO_IN"
+desc = "GPIO Input Value"
+offset = 0x0804
+
+	[[regs.fields]]
+	name = "CPU_GPIO_IN"
+	desc = "Represents GPIOn (n=0 ~ 21) input value (1=high, 0=low). CPU_GPIO_IN[7:0] correspond to input signals cpu_gpio_in[7:0] in GPIO Matrix and can only be mapped to GPIO pins through GPIO matrix"
+	bits = "7:0"
+	reset = 0x0
+	access = "RO"
+
+[[regs]]
+name = "CPU_GPIO_OUT"
+desc = "GPIO Output Value"
+offset = 0x0805
+
+	[[regs.fields]]
+	name = "CPU_GPIO_OUT"
+	desc = "Configures GPIOn (n=0 ~ 21) output value (1=high, 0=low). The value takes effect only when CPU_GPIO_OEN is set. CPU_GPIO_OUT[7:0] correspond to output signals cpu_gpio_out[7:0] in GPIO Matrix and can only be mapped to GPIO pins through GPIO matrix"
+	bits = "7:0"
+	reset = 0x0
+	access = "R/W"
+
+[[regs]]
+name = "PMA_CFG"
+desc = "Physical memory attribute configuration"
+offset = 0x0BC0
+count = 16
+stride = 1
+
+	[[regs.fields]]
+	name = "TYPE"
+	desc = "Configures region type. 0x0: Invalid memory region (RWX access will be treated as 0, even if programmed to 1) 0x1: Valid memory region (Programmed RWX access will be applicable)"
+	bits = "0"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "EXECUTE"
+	desc = "Configures execute-permission for the corresponding region. 0: Execution not allowed 1: Execution allowed"
+	bits = "2"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "WRITE"
+	desc = "Configures write-permission for the corresponding region. 0: Write not allowed 1: Write allowed"
+	bits = "3"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "READ"
+	desc = "Configures read-permission for the corresponding region. 0: Read not allowed 1: Read allowed"
+	bits = "4"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "ATTRIBUTE"
+	desc = "Configures the values to be driven on DRAM attribute ports"
+	bits = "27:24"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "LOCK"
+	desc = "Configures whether to lock the corresponding pma_cfgX and pma_addrX. 0: Not locked 1: Locked. The write permission to the corresponding pma_cfgX and pma_addrX is revoked. It can only be unlocked by core reset"
+	bits = "29"
+	reset = 0x0
+	access = "R/W"
+
+	[[regs.fields]]
+	name = "A"
+	desc = "Configures address type. The functionality is the same as pmpcfg register's A field. 0x0: OFF 0x1: TOR 0x2: NA4 0x3: NAPOT"
+	bits = "31:30"
+	reset = 0x2
+	access = "R/W"
+
+[[regs]]
+name = "PMA_ADDR"
+desc = "Physical memory attribute address register"
+offset = 0x0BD0
+count = 16
+stride = 1
+
+	[[regs.fields]]
+	name = "ADDR"
+	desc = "Configures address. The functionality is same as pmpaddr register"
+	bits = "31:0"
+	reset = 0x0
+	access = "R/W"

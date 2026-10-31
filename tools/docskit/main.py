@@ -38,6 +38,28 @@ def get_bit_mask(msb, lsb):
     return mask << lsb
 
 
+def reg_instances(reg):
+    if "count" not in reg:
+        return [(reg["name"], reg["offset"])]
+    stride = reg.get("stride", 1)
+    return [(f"{reg['name']}{n}", reg["offset"] + n * stride) for n in range(reg["count"])]
+
+
+def expand_fields(fields):
+    expanded = []
+    for field in fields:
+        if "count" not in field:
+            expanded.append(field)
+            continue
+        msb, lsb = parse_bit_range(field["bits"])
+        stride = field.get("stride", msb - lsb + 1)
+        for i in range(field["count"]):
+            shift = i * stride
+            bits = f"{msb + shift}:{lsb + shift}" if msb != lsb else f"{lsb + shift}"
+            expanded.append({**field, "name": f"{field['name']}{i}", "bits": bits})
+    return sorted(expanded, key=lambda f: parse_bit_range(f["bits"])[1] or 0)
+
+
 def generate_cheader(data):
     desc = data.get("desc")
     prefix = data.get("prefix")
@@ -61,44 +83,54 @@ def generate_cheader(data):
 
     padding = 0
     for reg in regs:
-        padding = max(padding, len(reg["name"]))
+        for name, _ in reg_instances(reg):
+            padding = max(padding, len(name))
 
     content += "//Register Offsets\n\n"
     for reg in regs:
-        reg_name = reg["name"]
-        reg_offset = reg["offset"]
         reg_desc = reg["desc"]
 
         postfix = "OFS"
         macro_padding = padding + len(prefix) + len(postfix) + 2
-        macro_name = f"{prefix}_{reg_name}_{postfix}".ljust(macro_padding)
-        macro_value = f"0x{reg_offset:04X}UL"
-
-        content += f"#define {macro_name} ( {macro_value} ) // {reg_desc}\n"
+        for reg_name, reg_offset in reg_instances(reg):
+            macro_name = f"{prefix}_{reg_name}_{postfix}".ljust(macro_padding)
+            macro_value = f"0x{reg_offset:04X}UL"
+            content += f"#define {macro_name} ( {macro_value} ) // {reg_desc}\n"
 
     content += "\n"
     content += "// Register REGs\n\n"
     for reg in regs:
-        reg_name = reg["name"]
-        reg_offset = reg["offset"]
-
         postfix = "REG(base)"
-        macro_padding = padding + len(prefix) + len(postfix) + 2
-        macro_name = f"{prefix}_{reg_name}_{postfix}".ljust(macro_padding)
-        macro_padding = padding + len(prefix) + 16
-        macro_value = f"(base) + ({prefix}_{reg_name}_OFS)".ljust(macro_padding)
-
-        content += f"#define {macro_name} ( {macro_value} )\n"
+        name_padding = padding + len(prefix) + len(postfix) + 2
+        value_padding = padding + len(prefix) + 16
+        for reg_name, _ in reg_instances(reg):
+            macro_name = f"{prefix}_{reg_name}_{postfix}".ljust(name_padding)
+            macro_value = f"(base) + ({prefix}_{reg_name}_OFS)".ljust(value_padding)
+            content += f"#define {macro_name} ( {macro_value} )\n"
 
     content += "\n"
     content += "// Register Bits\n\n"
     for reg in regs:
         reg_name = reg["name"]
         reg_desc = reg["desc"]
-        reg_fields = reg.get("fields", [])
+        reg_fields = expand_fields(reg.get("fields", []))
 
         content += f"// {prefix}_{reg_name}\n"
-        content += f'#define {prefix}_{reg_name}_DESC "{reg_desc}"\n\n'
+        macro_desc = f"{prefix}_{reg_name}_DESC"
+        macro_ofs = f"{prefix}_{reg_name}_OFS(n)"
+        macro_reg = f"{prefix}_{reg_name}_REG(base, n)"
+        macro_regs = f"{prefix}_{reg_name}_REGS(base)"
+        is_array = "count" in reg
+        macro_padding = max(len(macro_reg), len(macro_regs)) if is_array else len(macro_desc)
+
+        content += f'#define {macro_desc.ljust(macro_padding)} "{reg_desc}"\n'
+        if is_array:
+            ofs_value = f"0x{reg['offset']:04X}UL + (n) * 0x{reg.get('stride', 1):X}UL"
+            content += f"#define {macro_ofs.ljust(macro_padding)} ( {ofs_value} )\n"
+            content += f"#define {macro_reg.ljust(macro_padding)} ( (base) + ({macro_ofs}) )\n"
+            regs_value = ", ".join(f"{prefix}_{name}_REG(base)" for name, _ in reg_instances(reg))
+            content += f"#define {macro_regs.ljust(macro_padding)} {{ {regs_value} }}\n"
+        content += "\n"
 
         content += "#ifndef __ASSEMBLY__\n\n"
         content += f"union {prefix.lower()}_{reg_name.lower()} "
