@@ -85,23 +85,23 @@ ${DIR_OUT}/%.s.o: %.S
 	${Q} ${CC} ${ASMFLAGS} ${MACROS} -c $< -o $@
 
 ${IMG}: ${PAD}
-	${Q} ${PY} tools/imager/main.py ${PAD} ${IMG}
+	${Q} ${UV} run tools/imager/main.py ${PAD} ${IMG}
 
 .PHONY: image flash monitor
 image: ${IMG}
 
 flash: ${IMG}
-	${Q} ${PY} tools/espctl/espctl.py flash ${IMG}
+	${Q} ${UV} run tools/espctl/espctl.py flash ${IMG}
 
 monitor:
-	${Q} ${PY} tools/espctl/espctl.py monitor
+	${Q} ${UV} run tools/espctl/espctl.py monitor
 
 .PHONY: docs docs-regs
 docs: docs-regs
 
 docs-regs:
 	${Q} cat docs/regs/docskit.cmds | while read -r line; do \
-		${PY} tools/docskit/main.py $$line; \
+		${UV} run tools/docskit/main.py $$line; \
 	done
 
 .PHONY: clean tags

@@ -11,3 +11,4 @@ RMDIR := rm -rf
 CAT   := cat
 SED   := sed
 PY    := python3
+UV    := uv
