@@ -60,7 +60,7 @@ def expand_fields(fields):
     return sorted(expanded, key=lambda f: parse_bit_range(f["bits"])[1] or 0)
 
 
-def generate_cheader(data):
+def generate_cheader(data, ofs_postfix, emit_reg):
     desc = data.get("desc")
     prefix = data.get("prefix")
     regs = data.get("regs", [])
@@ -90,25 +90,25 @@ def generate_cheader(data):
     for reg in regs:
         reg_desc = reg["desc"]
 
-        postfix = "OFS"
-        macro_padding = padding + len(prefix) + len(postfix) + 2
+        macro_padding = padding + len(prefix) + len(ofs_postfix) + 1
         for reg_name, reg_offset in reg_instances(reg):
-            macro_name = f"{prefix}_{reg_name}_{postfix}".ljust(macro_padding)
+            macro_name = f"{prefix}_{reg_name}{ofs_postfix}".ljust(macro_padding)
             macro_value = f"0x{reg_offset:04X}UL"
             content += f"#define {macro_name} ( {macro_value} ) // {reg_desc}\n"
 
     content += "\n"
-    content += "// Register REGs\n\n"
-    for reg in regs:
-        postfix = "REG(base)"
-        name_padding = padding + len(prefix) + len(postfix) + 2
-        value_padding = padding + len(prefix) + 16
-        for reg_name, _ in reg_instances(reg):
-            macro_name = f"{prefix}_{reg_name}_{postfix}".ljust(name_padding)
-            macro_value = f"(base) + ({prefix}_{reg_name}_OFS)".ljust(value_padding)
-            content += f"#define {macro_name} ( {macro_value} )\n"
+    if emit_reg:
+        content += "// Register REGs\n\n"
+        for reg in regs:
+            postfix = "REG(base)"
+            name_padding = padding + len(prefix) + len(postfix) + 2
+            value_padding = padding + len(prefix) + len(ofs_postfix) + 12
+            for reg_name, _ in reg_instances(reg):
+                macro_name = f"{prefix}_{reg_name}_{postfix}".ljust(name_padding)
+                macro_value = f"(base) + ({prefix}_{reg_name}{ofs_postfix})".ljust(value_padding)
+                content += f"#define {macro_name} ( {macro_value} )\n"
 
-    content += "\n"
+        content += "\n"
     content += "// Register Bits\n\n"
     for reg in regs:
         reg_name = reg["name"]
@@ -117,16 +117,23 @@ def generate_cheader(data):
 
         content += f"// {prefix}_{reg_name}\n"
         macro_desc = f"{prefix}_{reg_name}_DESC"
-        macro_ofs = f"{prefix}_{reg_name}_OFS(n)"
+        macro_ofs = f"{prefix}_{reg_name}{ofs_postfix}(n)"
         macro_reg = f"{prefix}_{reg_name}_REG(base, n)"
         macro_regs = f"{prefix}_{reg_name}_REGS(base)"
         is_array = "count" in reg
-        macro_padding = max(len(macro_reg), len(macro_regs)) if is_array else len(macro_desc)
+
+        names = [macro_desc]
+        if is_array:
+            names.append(macro_ofs)
+        if is_array and emit_reg:
+            names += [macro_reg, macro_regs]
+        macro_padding = max(len(name) for name in names)
 
         content += f'#define {macro_desc.ljust(macro_padding)} "{reg_desc}"\n'
         if is_array:
             ofs_value = f"0x{reg['offset']:04X}UL + (n) * 0x{reg.get('stride', 1):X}UL"
             content += f"#define {macro_ofs.ljust(macro_padding)} ( {ofs_value} )\n"
+        if is_array and emit_reg:
             content += f"#define {macro_reg.ljust(macro_padding)} ( (base) + ({macro_ofs}) )\n"
             regs_value = ", ".join(f"{prefix}_{name}_REG(base)" for name, _ in reg_instances(reg))
             content += f"#define {macro_regs.ljust(macro_padding)} {{ {regs_value} }}\n"
@@ -230,12 +237,18 @@ def main():
         help="output file format",
     )
 
+    parser.add_argument("--no-ofs", action="store_true", help="drop _OFS postfix from offset macros (implies --no-reg)")
+    parser.add_argument("--no-reg", action="store_true", help="do not emit _REG/_REGS macros")
+
     args = parser.parse_args()
+
+    ofs_postfix = "" if args.no_ofs else "_OFS"
+    emit_reg = not (args.no_reg or args.no_ofs)
 
     data = parse_toml_file(args.input_file)
 
     if args.format == "cheader":
-        content = generate_cheader(data)
+        content = generate_cheader(data, ofs_postfix, emit_reg)
 
         with open(args.output_file, "w", encoding="utf-8") as f:
             f.write(content)

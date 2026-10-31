@@ -11,187 +11,95 @@
 
 //Register Offsets
 
-#define CSR_MVENDORID_OFS    ( 0x0F11UL ) // Machine Vendor ID
-#define CSR_MARCHID_OFS      ( 0x0F12UL ) // Machine Architecture ID
-#define CSR_MIMPID_OFS       ( 0x0F13UL ) // Machine Implementation ID
-#define CSR_MHARTID_OFS      ( 0x0F14UL ) // Machine Hart ID
-#define CSR_MSTATUS_OFS      ( 0x0300UL ) // Machine Mode Status
-#define CSR_MISA_OFS         ( 0x0301UL ) // Machine ISA
-#define CSR_MIDELEG_OFS      ( 0x0303UL ) // Machine Interrupt Delegation Register
-#define CSR_MIE_OFS          ( 0x0304UL ) // Machine Interrupt Enable Register
-#define CSR_MTVEC_OFS        ( 0x0305UL ) // Machine Trap Vector
-#define CSR_MSCRATCH_OFS     ( 0x0340UL ) // Machine Scratch
-#define CSR_MEPC_OFS         ( 0x0341UL ) // Machine Trap Program Counter
-#define CSR_MCAUSE_OFS       ( 0x0342UL ) // Machine Trap Cause
-#define CSR_MTVAL_OFS        ( 0x0343UL ) // Machine Trap Value
-#define CSR_MIP_OFS          ( 0x0344UL ) // Machine Interrupt Pending
-#define CSR_USTATUS_OFS      ( 0x0000UL ) // User Mode Status
-#define CSR_UIE_OFS          ( 0x0004UL ) // User Interrupt Enable Register
-#define CSR_UTVEC_OFS        ( 0x0005UL ) // User Trap Vector
-#define CSR_USCRATCH_OFS     ( 0x0040UL ) // User Scratch
-#define CSR_UEPC_OFS         ( 0x0041UL ) // User Trap Program Counter
-#define CSR_UCAUSE_OFS       ( 0x0042UL ) // User Trap Cause
-#define CSR_UIP_OFS          ( 0x0044UL ) // User Interrupt Pending
-#define CSR_PMPCFG0_OFS      ( 0x03A0UL ) // Physical memory protection configuration
-#define CSR_PMPCFG1_OFS      ( 0x03A1UL ) // Physical memory protection configuration
-#define CSR_PMPCFG2_OFS      ( 0x03A2UL ) // Physical memory protection configuration
-#define CSR_PMPCFG3_OFS      ( 0x03A3UL ) // Physical memory protection configuration
-#define CSR_PMPADDR0_OFS     ( 0x03B0UL ) // Physical memory protection address register
-#define CSR_PMPADDR1_OFS     ( 0x03B1UL ) // Physical memory protection address register
-#define CSR_PMPADDR2_OFS     ( 0x03B2UL ) // Physical memory protection address register
-#define CSR_PMPADDR3_OFS     ( 0x03B3UL ) // Physical memory protection address register
-#define CSR_PMPADDR4_OFS     ( 0x03B4UL ) // Physical memory protection address register
-#define CSR_PMPADDR5_OFS     ( 0x03B5UL ) // Physical memory protection address register
-#define CSR_PMPADDR6_OFS     ( 0x03B6UL ) // Physical memory protection address register
-#define CSR_PMPADDR7_OFS     ( 0x03B7UL ) // Physical memory protection address register
-#define CSR_PMPADDR8_OFS     ( 0x03B8UL ) // Physical memory protection address register
-#define CSR_PMPADDR9_OFS     ( 0x03B9UL ) // Physical memory protection address register
-#define CSR_PMPADDR10_OFS    ( 0x03BAUL ) // Physical memory protection address register
-#define CSR_PMPADDR11_OFS    ( 0x03BBUL ) // Physical memory protection address register
-#define CSR_PMPADDR12_OFS    ( 0x03BCUL ) // Physical memory protection address register
-#define CSR_PMPADDR13_OFS    ( 0x03BDUL ) // Physical memory protection address register
-#define CSR_PMPADDR14_OFS    ( 0x03BEUL ) // Physical memory protection address register
-#define CSR_PMPADDR15_OFS    ( 0x03BFUL ) // Physical memory protection address register
-#define CSR_TSELECT_OFS      ( 0x07A0UL ) // Trigger Select Register
-#define CSR_TDATA1_OFS       ( 0x07A1UL ) // Trigger Abstract Data 1
-#define CSR_TDATA2_OFS       ( 0x07A2UL ) // Trigger Abstract Data 2
-#define CSR_TCONTROL_OFS     ( 0x07A5UL ) // Global Trigger Control
-#define CSR_MCONTROL_OFS     ( 0x07A1UL ) // Match Control (tdata1 view)
-#define CSR_MADDRESS_OFS     ( 0x07A2UL ) // Match Address (tdata2 view)
-#define CSR_DCSR_OFS         ( 0x07B0UL ) // Debug Control and Status
-#define CSR_DPC_OFS          ( 0x07B1UL ) // Debug PC
-#define CSR_DSCRATCH0_OFS    ( 0x07B2UL ) // Debug Scratch Register 0
-#define CSR_DSCRATCH1_OFS    ( 0x07B3UL ) // Debug Scratch Register 1
-#define CSR_MPCER_OFS        ( 0x07E0UL ) // Machine Performance Counter Event
-#define CSR_MPCMR_OFS        ( 0x07E1UL ) // Machine Performance Counter Mode
-#define CSR_MPCCR_OFS        ( 0x07E2UL ) // Machine Performance Counter Count
-#define CSR_CPU_GPIO_OEN_OFS ( 0x0803UL ) // GPIO Output Enable
-#define CSR_CPU_GPIO_IN_OFS  ( 0x0804UL ) // GPIO Input Value
-#define CSR_CPU_GPIO_OUT_OFS ( 0x0805UL ) // GPIO Output Value
-#define CSR_PMA_CFG0_OFS     ( 0x0BC0UL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG1_OFS     ( 0x0BC1UL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG2_OFS     ( 0x0BC2UL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG3_OFS     ( 0x0BC3UL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG4_OFS     ( 0x0BC4UL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG5_OFS     ( 0x0BC5UL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG6_OFS     ( 0x0BC6UL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG7_OFS     ( 0x0BC7UL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG8_OFS     ( 0x0BC8UL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG9_OFS     ( 0x0BC9UL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG10_OFS    ( 0x0BCAUL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG11_OFS    ( 0x0BCBUL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG12_OFS    ( 0x0BCCUL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG13_OFS    ( 0x0BCDUL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG14_OFS    ( 0x0BCEUL ) // Physical memory attribute configuration
-#define CSR_PMA_CFG15_OFS    ( 0x0BCFUL ) // Physical memory attribute configuration
-#define CSR_PMA_ADDR0_OFS    ( 0x0BD0UL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR1_OFS    ( 0x0BD1UL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR2_OFS    ( 0x0BD2UL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR3_OFS    ( 0x0BD3UL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR4_OFS    ( 0x0BD4UL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR5_OFS    ( 0x0BD5UL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR6_OFS    ( 0x0BD6UL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR7_OFS    ( 0x0BD7UL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR8_OFS    ( 0x0BD8UL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR9_OFS    ( 0x0BD9UL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR10_OFS   ( 0x0BDAUL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR11_OFS   ( 0x0BDBUL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR12_OFS   ( 0x0BDCUL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR13_OFS   ( 0x0BDDUL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR14_OFS   ( 0x0BDEUL ) // Physical memory attribute address register
-#define CSR_PMA_ADDR15_OFS   ( 0x0BDFUL ) // Physical memory attribute address register
-
-// Register REGs
-
-#define CSR_MVENDORID_REG(base)    ( (base) + (CSR_MVENDORID_OFS)    )
-#define CSR_MARCHID_REG(base)      ( (base) + (CSR_MARCHID_OFS)      )
-#define CSR_MIMPID_REG(base)       ( (base) + (CSR_MIMPID_OFS)       )
-#define CSR_MHARTID_REG(base)      ( (base) + (CSR_MHARTID_OFS)      )
-#define CSR_MSTATUS_REG(base)      ( (base) + (CSR_MSTATUS_OFS)      )
-#define CSR_MISA_REG(base)         ( (base) + (CSR_MISA_OFS)         )
-#define CSR_MIDELEG_REG(base)      ( (base) + (CSR_MIDELEG_OFS)      )
-#define CSR_MIE_REG(base)          ( (base) + (CSR_MIE_OFS)          )
-#define CSR_MTVEC_REG(base)        ( (base) + (CSR_MTVEC_OFS)        )
-#define CSR_MSCRATCH_REG(base)     ( (base) + (CSR_MSCRATCH_OFS)     )
-#define CSR_MEPC_REG(base)         ( (base) + (CSR_MEPC_OFS)         )
-#define CSR_MCAUSE_REG(base)       ( (base) + (CSR_MCAUSE_OFS)       )
-#define CSR_MTVAL_REG(base)        ( (base) + (CSR_MTVAL_OFS)        )
-#define CSR_MIP_REG(base)          ( (base) + (CSR_MIP_OFS)          )
-#define CSR_USTATUS_REG(base)      ( (base) + (CSR_USTATUS_OFS)      )
-#define CSR_UIE_REG(base)          ( (base) + (CSR_UIE_OFS)          )
-#define CSR_UTVEC_REG(base)        ( (base) + (CSR_UTVEC_OFS)        )
-#define CSR_USCRATCH_REG(base)     ( (base) + (CSR_USCRATCH_OFS)     )
-#define CSR_UEPC_REG(base)         ( (base) + (CSR_UEPC_OFS)         )
-#define CSR_UCAUSE_REG(base)       ( (base) + (CSR_UCAUSE_OFS)       )
-#define CSR_UIP_REG(base)          ( (base) + (CSR_UIP_OFS)          )
-#define CSR_PMPCFG0_REG(base)      ( (base) + (CSR_PMPCFG0_OFS)      )
-#define CSR_PMPCFG1_REG(base)      ( (base) + (CSR_PMPCFG1_OFS)      )
-#define CSR_PMPCFG2_REG(base)      ( (base) + (CSR_PMPCFG2_OFS)      )
-#define CSR_PMPCFG3_REG(base)      ( (base) + (CSR_PMPCFG3_OFS)      )
-#define CSR_PMPADDR0_REG(base)     ( (base) + (CSR_PMPADDR0_OFS)     )
-#define CSR_PMPADDR1_REG(base)     ( (base) + (CSR_PMPADDR1_OFS)     )
-#define CSR_PMPADDR2_REG(base)     ( (base) + (CSR_PMPADDR2_OFS)     )
-#define CSR_PMPADDR3_REG(base)     ( (base) + (CSR_PMPADDR3_OFS)     )
-#define CSR_PMPADDR4_REG(base)     ( (base) + (CSR_PMPADDR4_OFS)     )
-#define CSR_PMPADDR5_REG(base)     ( (base) + (CSR_PMPADDR5_OFS)     )
-#define CSR_PMPADDR6_REG(base)     ( (base) + (CSR_PMPADDR6_OFS)     )
-#define CSR_PMPADDR7_REG(base)     ( (base) + (CSR_PMPADDR7_OFS)     )
-#define CSR_PMPADDR8_REG(base)     ( (base) + (CSR_PMPADDR8_OFS)     )
-#define CSR_PMPADDR9_REG(base)     ( (base) + (CSR_PMPADDR9_OFS)     )
-#define CSR_PMPADDR10_REG(base)    ( (base) + (CSR_PMPADDR10_OFS)    )
-#define CSR_PMPADDR11_REG(base)    ( (base) + (CSR_PMPADDR11_OFS)    )
-#define CSR_PMPADDR12_REG(base)    ( (base) + (CSR_PMPADDR12_OFS)    )
-#define CSR_PMPADDR13_REG(base)    ( (base) + (CSR_PMPADDR13_OFS)    )
-#define CSR_PMPADDR14_REG(base)    ( (base) + (CSR_PMPADDR14_OFS)    )
-#define CSR_PMPADDR15_REG(base)    ( (base) + (CSR_PMPADDR15_OFS)    )
-#define CSR_TSELECT_REG(base)      ( (base) + (CSR_TSELECT_OFS)      )
-#define CSR_TDATA1_REG(base)       ( (base) + (CSR_TDATA1_OFS)       )
-#define CSR_TDATA2_REG(base)       ( (base) + (CSR_TDATA2_OFS)       )
-#define CSR_TCONTROL_REG(base)     ( (base) + (CSR_TCONTROL_OFS)     )
-#define CSR_MCONTROL_REG(base)     ( (base) + (CSR_MCONTROL_OFS)     )
-#define CSR_MADDRESS_REG(base)     ( (base) + (CSR_MADDRESS_OFS)     )
-#define CSR_DCSR_REG(base)         ( (base) + (CSR_DCSR_OFS)         )
-#define CSR_DPC_REG(base)          ( (base) + (CSR_DPC_OFS)          )
-#define CSR_DSCRATCH0_REG(base)    ( (base) + (CSR_DSCRATCH0_OFS)    )
-#define CSR_DSCRATCH1_REG(base)    ( (base) + (CSR_DSCRATCH1_OFS)    )
-#define CSR_MPCER_REG(base)        ( (base) + (CSR_MPCER_OFS)        )
-#define CSR_MPCMR_REG(base)        ( (base) + (CSR_MPCMR_OFS)        )
-#define CSR_MPCCR_REG(base)        ( (base) + (CSR_MPCCR_OFS)        )
-#define CSR_CPU_GPIO_OEN_REG(base) ( (base) + (CSR_CPU_GPIO_OEN_OFS) )
-#define CSR_CPU_GPIO_IN_REG(base)  ( (base) + (CSR_CPU_GPIO_IN_OFS)  )
-#define CSR_CPU_GPIO_OUT_REG(base) ( (base) + (CSR_CPU_GPIO_OUT_OFS) )
-#define CSR_PMA_CFG0_REG(base)     ( (base) + (CSR_PMA_CFG0_OFS)     )
-#define CSR_PMA_CFG1_REG(base)     ( (base) + (CSR_PMA_CFG1_OFS)     )
-#define CSR_PMA_CFG2_REG(base)     ( (base) + (CSR_PMA_CFG2_OFS)     )
-#define CSR_PMA_CFG3_REG(base)     ( (base) + (CSR_PMA_CFG3_OFS)     )
-#define CSR_PMA_CFG4_REG(base)     ( (base) + (CSR_PMA_CFG4_OFS)     )
-#define CSR_PMA_CFG5_REG(base)     ( (base) + (CSR_PMA_CFG5_OFS)     )
-#define CSR_PMA_CFG6_REG(base)     ( (base) + (CSR_PMA_CFG6_OFS)     )
-#define CSR_PMA_CFG7_REG(base)     ( (base) + (CSR_PMA_CFG7_OFS)     )
-#define CSR_PMA_CFG8_REG(base)     ( (base) + (CSR_PMA_CFG8_OFS)     )
-#define CSR_PMA_CFG9_REG(base)     ( (base) + (CSR_PMA_CFG9_OFS)     )
-#define CSR_PMA_CFG10_REG(base)    ( (base) + (CSR_PMA_CFG10_OFS)    )
-#define CSR_PMA_CFG11_REG(base)    ( (base) + (CSR_PMA_CFG11_OFS)    )
-#define CSR_PMA_CFG12_REG(base)    ( (base) + (CSR_PMA_CFG12_OFS)    )
-#define CSR_PMA_CFG13_REG(base)    ( (base) + (CSR_PMA_CFG13_OFS)    )
-#define CSR_PMA_CFG14_REG(base)    ( (base) + (CSR_PMA_CFG14_OFS)    )
-#define CSR_PMA_CFG15_REG(base)    ( (base) + (CSR_PMA_CFG15_OFS)    )
-#define CSR_PMA_ADDR0_REG(base)    ( (base) + (CSR_PMA_ADDR0_OFS)    )
-#define CSR_PMA_ADDR1_REG(base)    ( (base) + (CSR_PMA_ADDR1_OFS)    )
-#define CSR_PMA_ADDR2_REG(base)    ( (base) + (CSR_PMA_ADDR2_OFS)    )
-#define CSR_PMA_ADDR3_REG(base)    ( (base) + (CSR_PMA_ADDR3_OFS)    )
-#define CSR_PMA_ADDR4_REG(base)    ( (base) + (CSR_PMA_ADDR4_OFS)    )
-#define CSR_PMA_ADDR5_REG(base)    ( (base) + (CSR_PMA_ADDR5_OFS)    )
-#define CSR_PMA_ADDR6_REG(base)    ( (base) + (CSR_PMA_ADDR6_OFS)    )
-#define CSR_PMA_ADDR7_REG(base)    ( (base) + (CSR_PMA_ADDR7_OFS)    )
-#define CSR_PMA_ADDR8_REG(base)    ( (base) + (CSR_PMA_ADDR8_OFS)    )
-#define CSR_PMA_ADDR9_REG(base)    ( (base) + (CSR_PMA_ADDR9_OFS)    )
-#define CSR_PMA_ADDR10_REG(base)   ( (base) + (CSR_PMA_ADDR10_OFS)   )
-#define CSR_PMA_ADDR11_REG(base)   ( (base) + (CSR_PMA_ADDR11_OFS)   )
-#define CSR_PMA_ADDR12_REG(base)   ( (base) + (CSR_PMA_ADDR12_OFS)   )
-#define CSR_PMA_ADDR13_REG(base)   ( (base) + (CSR_PMA_ADDR13_OFS)   )
-#define CSR_PMA_ADDR14_REG(base)   ( (base) + (CSR_PMA_ADDR14_OFS)   )
-#define CSR_PMA_ADDR15_REG(base)   ( (base) + (CSR_PMA_ADDR15_OFS)   )
+#define CSR_MVENDORID    ( 0x0F11UL ) // Machine Vendor ID
+#define CSR_MARCHID      ( 0x0F12UL ) // Machine Architecture ID
+#define CSR_MIMPID       ( 0x0F13UL ) // Machine Implementation ID
+#define CSR_MHARTID      ( 0x0F14UL ) // Machine Hart ID
+#define CSR_MSTATUS      ( 0x0300UL ) // Machine Mode Status
+#define CSR_MISA         ( 0x0301UL ) // Machine ISA
+#define CSR_MIDELEG      ( 0x0303UL ) // Machine Interrupt Delegation Register
+#define CSR_MIE          ( 0x0304UL ) // Machine Interrupt Enable Register
+#define CSR_MTVEC        ( 0x0305UL ) // Machine Trap Vector
+#define CSR_MSCRATCH     ( 0x0340UL ) // Machine Scratch
+#define CSR_MEPC         ( 0x0341UL ) // Machine Trap Program Counter
+#define CSR_MCAUSE       ( 0x0342UL ) // Machine Trap Cause
+#define CSR_MTVAL        ( 0x0343UL ) // Machine Trap Value
+#define CSR_MIP          ( 0x0344UL ) // Machine Interrupt Pending
+#define CSR_USTATUS      ( 0x0000UL ) // User Mode Status
+#define CSR_UIE          ( 0x0004UL ) // User Interrupt Enable Register
+#define CSR_UTVEC        ( 0x0005UL ) // User Trap Vector
+#define CSR_USCRATCH     ( 0x0040UL ) // User Scratch
+#define CSR_UEPC         ( 0x0041UL ) // User Trap Program Counter
+#define CSR_UCAUSE       ( 0x0042UL ) // User Trap Cause
+#define CSR_UIP          ( 0x0044UL ) // User Interrupt Pending
+#define CSR_PMPCFG0      ( 0x03A0UL ) // Physical memory protection configuration
+#define CSR_PMPCFG1      ( 0x03A1UL ) // Physical memory protection configuration
+#define CSR_PMPCFG2      ( 0x03A2UL ) // Physical memory protection configuration
+#define CSR_PMPCFG3      ( 0x03A3UL ) // Physical memory protection configuration
+#define CSR_PMPADDR0     ( 0x03B0UL ) // Physical memory protection address register
+#define CSR_PMPADDR1     ( 0x03B1UL ) // Physical memory protection address register
+#define CSR_PMPADDR2     ( 0x03B2UL ) // Physical memory protection address register
+#define CSR_PMPADDR3     ( 0x03B3UL ) // Physical memory protection address register
+#define CSR_PMPADDR4     ( 0x03B4UL ) // Physical memory protection address register
+#define CSR_PMPADDR5     ( 0x03B5UL ) // Physical memory protection address register
+#define CSR_PMPADDR6     ( 0x03B6UL ) // Physical memory protection address register
+#define CSR_PMPADDR7     ( 0x03B7UL ) // Physical memory protection address register
+#define CSR_PMPADDR8     ( 0x03B8UL ) // Physical memory protection address register
+#define CSR_PMPADDR9     ( 0x03B9UL ) // Physical memory protection address register
+#define CSR_PMPADDR10    ( 0x03BAUL ) // Physical memory protection address register
+#define CSR_PMPADDR11    ( 0x03BBUL ) // Physical memory protection address register
+#define CSR_PMPADDR12    ( 0x03BCUL ) // Physical memory protection address register
+#define CSR_PMPADDR13    ( 0x03BDUL ) // Physical memory protection address register
+#define CSR_PMPADDR14    ( 0x03BEUL ) // Physical memory protection address register
+#define CSR_PMPADDR15    ( 0x03BFUL ) // Physical memory protection address register
+#define CSR_TSELECT      ( 0x07A0UL ) // Trigger Select Register
+#define CSR_TDATA1       ( 0x07A1UL ) // Trigger Abstract Data 1
+#define CSR_TDATA2       ( 0x07A2UL ) // Trigger Abstract Data 2
+#define CSR_TCONTROL     ( 0x07A5UL ) // Global Trigger Control
+#define CSR_MCONTROL     ( 0x07A1UL ) // Match Control (tdata1 view)
+#define CSR_MADDRESS     ( 0x07A2UL ) // Match Address (tdata2 view)
+#define CSR_DCSR         ( 0x07B0UL ) // Debug Control and Status
+#define CSR_DPC          ( 0x07B1UL ) // Debug PC
+#define CSR_DSCRATCH0    ( 0x07B2UL ) // Debug Scratch Register 0
+#define CSR_DSCRATCH1    ( 0x07B3UL ) // Debug Scratch Register 1
+#define CSR_MPCER        ( 0x07E0UL ) // Machine Performance Counter Event
+#define CSR_MPCMR        ( 0x07E1UL ) // Machine Performance Counter Mode
+#define CSR_MPCCR        ( 0x07E2UL ) // Machine Performance Counter Count
+#define CSR_CPU_GPIO_OEN ( 0x0803UL ) // GPIO Output Enable
+#define CSR_CPU_GPIO_IN  ( 0x0804UL ) // GPIO Input Value
+#define CSR_CPU_GPIO_OUT ( 0x0805UL ) // GPIO Output Value
+#define CSR_PMA_CFG0     ( 0x0BC0UL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG1     ( 0x0BC1UL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG2     ( 0x0BC2UL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG3     ( 0x0BC3UL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG4     ( 0x0BC4UL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG5     ( 0x0BC5UL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG6     ( 0x0BC6UL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG7     ( 0x0BC7UL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG8     ( 0x0BC8UL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG9     ( 0x0BC9UL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG10    ( 0x0BCAUL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG11    ( 0x0BCBUL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG12    ( 0x0BCCUL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG13    ( 0x0BCDUL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG14    ( 0x0BCEUL ) // Physical memory attribute configuration
+#define CSR_PMA_CFG15    ( 0x0BCFUL ) // Physical memory attribute configuration
+#define CSR_PMA_ADDR0    ( 0x0BD0UL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR1    ( 0x0BD1UL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR2    ( 0x0BD2UL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR3    ( 0x0BD3UL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR4    ( 0x0BD4UL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR5    ( 0x0BD5UL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR6    ( 0x0BD6UL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR7    ( 0x0BD7UL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR8    ( 0x0BD8UL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR9    ( 0x0BD9UL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR10   ( 0x0BDAUL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR11   ( 0x0BDBUL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR12   ( 0x0BDCUL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR13   ( 0x0BDDUL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR14   ( 0x0BDEUL ) // Physical memory attribute address register
+#define CSR_PMA_ADDR15   ( 0x0BDFUL ) // Physical memory attribute address register
 
 // Register Bits
 
@@ -967,10 +875,8 @@ union csr_uip {
 #define CSR_UIP_UXIP31_8_RAW(value) ( (value) << (CSR_UIP_UXIP31_8_SHIFT) )
 
 // CSR_PMPCFG
-#define CSR_PMPCFG_DESC         "Physical memory protection configuration"
-#define CSR_PMPCFG_OFS(n)       ( 0x03A0UL + (n) * 0x1UL )
-#define CSR_PMPCFG_REG(base, n) ( (base) + (CSR_PMPCFG_OFS(n)) )
-#define CSR_PMPCFG_REGS(base)   { CSR_PMPCFG0_REG(base), CSR_PMPCFG1_REG(base), CSR_PMPCFG2_REG(base), CSR_PMPCFG3_REG(base) }
+#define CSR_PMPCFG_DESC "Physical memory protection configuration"
+#define CSR_PMPCFG(n)   ( 0x03A0UL + (n) * 0x1UL )
 
 #ifndef __ASSEMBLY__
 
@@ -1128,10 +1034,8 @@ union csr_pmpcfg {
 #define CSR_PMPCFG_L3_RAW(value) ( (value) << (CSR_PMPCFG_L3_SHIFT) )
 
 // CSR_PMPADDR
-#define CSR_PMPADDR_DESC         "Physical memory protection address register"
-#define CSR_PMPADDR_OFS(n)       ( 0x03B0UL + (n) * 0x1UL )
-#define CSR_PMPADDR_REG(base, n) ( (base) + (CSR_PMPADDR_OFS(n)) )
-#define CSR_PMPADDR_REGS(base)   { CSR_PMPADDR0_REG(base), CSR_PMPADDR1_REG(base), CSR_PMPADDR2_REG(base), CSR_PMPADDR3_REG(base), CSR_PMPADDR4_REG(base), CSR_PMPADDR5_REG(base), CSR_PMPADDR6_REG(base), CSR_PMPADDR7_REG(base), CSR_PMPADDR8_REG(base), CSR_PMPADDR9_REG(base), CSR_PMPADDR10_REG(base), CSR_PMPADDR11_REG(base), CSR_PMPADDR12_REG(base), CSR_PMPADDR13_REG(base), CSR_PMPADDR14_REG(base), CSR_PMPADDR15_REG(base) }
+#define CSR_PMPADDR_DESC "Physical memory protection address register"
+#define CSR_PMPADDR(n)   ( 0x03B0UL + (n) * 0x1UL )
 
 #ifndef __ASSEMBLY__
 
@@ -1709,10 +1613,8 @@ union csr_cpu_gpio_out {
 #define CSR_CPU_GPIO_OUT_CPU_GPIO_OUT_RAW(value) ( (value) << (CSR_CPU_GPIO_OUT_CPU_GPIO_OUT_SHIFT) )
 
 // CSR_PMA_CFG
-#define CSR_PMA_CFG_DESC         "Physical memory attribute configuration"
-#define CSR_PMA_CFG_OFS(n)       ( 0x0BC0UL + (n) * 0x1UL )
-#define CSR_PMA_CFG_REG(base, n) ( (base) + (CSR_PMA_CFG_OFS(n)) )
-#define CSR_PMA_CFG_REGS(base)   { CSR_PMA_CFG0_REG(base), CSR_PMA_CFG1_REG(base), CSR_PMA_CFG2_REG(base), CSR_PMA_CFG3_REG(base), CSR_PMA_CFG4_REG(base), CSR_PMA_CFG5_REG(base), CSR_PMA_CFG6_REG(base), CSR_PMA_CFG7_REG(base), CSR_PMA_CFG8_REG(base), CSR_PMA_CFG9_REG(base), CSR_PMA_CFG10_REG(base), CSR_PMA_CFG11_REG(base), CSR_PMA_CFG12_REG(base), CSR_PMA_CFG13_REG(base), CSR_PMA_CFG14_REG(base), CSR_PMA_CFG15_REG(base) }
+#define CSR_PMA_CFG_DESC "Physical memory attribute configuration"
+#define CSR_PMA_CFG(n)   ( 0x0BC0UL + (n) * 0x1UL )
 
 #ifndef __ASSEMBLY__
 
@@ -1778,10 +1680,8 @@ union csr_pma_cfg {
 #define CSR_PMA_CFG_A_RAW(value) ( (value) << (CSR_PMA_CFG_A_SHIFT) )
 
 // CSR_PMA_ADDR
-#define CSR_PMA_ADDR_DESC         "Physical memory attribute address register"
-#define CSR_PMA_ADDR_OFS(n)       ( 0x0BD0UL + (n) * 0x1UL )
-#define CSR_PMA_ADDR_REG(base, n) ( (base) + (CSR_PMA_ADDR_OFS(n)) )
-#define CSR_PMA_ADDR_REGS(base)   { CSR_PMA_ADDR0_REG(base), CSR_PMA_ADDR1_REG(base), CSR_PMA_ADDR2_REG(base), CSR_PMA_ADDR3_REG(base), CSR_PMA_ADDR4_REG(base), CSR_PMA_ADDR5_REG(base), CSR_PMA_ADDR6_REG(base), CSR_PMA_ADDR7_REG(base), CSR_PMA_ADDR8_REG(base), CSR_PMA_ADDR9_REG(base), CSR_PMA_ADDR10_REG(base), CSR_PMA_ADDR11_REG(base), CSR_PMA_ADDR12_REG(base), CSR_PMA_ADDR13_REG(base), CSR_PMA_ADDR14_REG(base), CSR_PMA_ADDR15_REG(base) }
+#define CSR_PMA_ADDR_DESC "Physical memory attribute address register"
+#define CSR_PMA_ADDR(n)   ( 0x0BD0UL + (n) * 0x1UL )
 
 #ifndef __ASSEMBLY__
 
